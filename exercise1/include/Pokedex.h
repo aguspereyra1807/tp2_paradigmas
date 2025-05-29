@@ -1,3 +1,5 @@
+#pragma once
+
 #include <unordered_map>
 #include <string>
 
@@ -6,14 +8,14 @@
 
 using namespace std;
 
+using u_map_P_PI = unordered_map<Pokemon, PokemonInfo>;
+
 class Pokedex {
     private:
-        unordered_map<Pokemon, PokemonInfo> data;
-
-        Pokemon searchPokemon(const Pokemon& pokemon) const;
+        u_map_P_PI data;
     public:
         Pokedex();
-        Pokedex(unordered_map<Pokemon, PokemonInfo> _data);
+        Pokedex(u_map_P_PI _data);
         ~Pokedex() = default;
 
         void addPokemon(Pokemon pokemon, PokemonInfo pokemonInfo);
