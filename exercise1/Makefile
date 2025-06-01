@@ -1,17 +1,27 @@
 all:
 	mkdir -p bin data
-	g++ -std=c++17 -Wall source/*.cpp examples/main.cpp -o bin/pokedex
+	g++ -std=c++17 -Wall source/*.cpp examples/itemB.cpp -o bin/itemB
+	g++ -std=c++17 -Wall source/*.cpp examples/itemC.cpp -o bin/itemC
+	g++ -std=c++17 -Wall source/*.cpp examples/itemD.cpp -o bin/itemD
 
-run: all
-	clear
-	./bin/pokedex
-
-test:
+b:
 	mkdir -p bin data
-	g++ -std=c++17 -Wall source/*.cpp tests/testShow.cpp -o bin/testShow
+	g++ -std=c++17 -Wall source/*.cpp examples/itemB.cpp -o bin/itemB
 	clear
-	./bin/testShow
+	./bin/itemB
+
+c:
+	mkdir -p bin data
+	g++ -std=c++17 -Wall source/*.cpp examples/itemC.cpp -o bin/itemC
+	clear
+	./bin/itemC
+
+d:
+	mkdir -p bin data
+	g++ -std=c++17 -Wall source/*.cpp examples/itemD.cpp -o bin/itemD
+	clear
+	./bin/itemD
 
 clean:
-	rm -f bin/pokedex bin/testShow
+	rm -f bin/itemB bin/itemC bin/itemD
 	rm -rf bin
