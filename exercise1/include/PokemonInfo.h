@@ -18,7 +18,7 @@ class PokemonInfo {
         vector<experience_t> nextLevelExperience;
     public:
         PokemonInfo();
-        PokemonInfo(const string& _type, const string& _description, const u_map_str_dmg _attacksByLevel, const vector<experience_t> _nextLevelExperience);
+        PokemonInfo(const string& _type, const string& _description, const u_map_str_dmg& _attacksByLevel, const vector<experience_t>& _nextLevelExperience);
         ~PokemonInfo() = default;
 
         string getType() const;

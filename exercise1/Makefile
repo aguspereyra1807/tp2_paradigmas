@@ -22,6 +22,12 @@ d:
 	clear
 	./bin/itemD
 
+d-valgrind:
+	mkdir -p bin data
+	g++ -std=c++17 -Wall -g source/*.cpp examples/itemD.cpp -o bin/itemD
+	clear
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./bin/itemD
+
 clean:
 	rm -f bin/itemB bin/itemC bin/itemD
 	rm -rf bin

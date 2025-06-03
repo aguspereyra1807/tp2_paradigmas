@@ -13,7 +13,7 @@ using u_map_P_PI = unordered_map<Pokemon, PokemonInfo>;
 class Pokedex {
     private:
         u_map_P_PI data;
-        string file = "pokedex.bin";
+        string file = "pokedex";
     public:
         Pokedex();
         Pokedex(u_map_P_PI _data);
@@ -22,7 +22,7 @@ class Pokedex {
 
         bool empty() const; 
 
-        void addPokemon(Pokemon pokemon, PokemonInfo pokemonInfo);
+        void addPokemon(const Pokemon& pokemon, const PokemonInfo& pokemonInfo);
 
         void showAll() const;
         void show(const Pokemon& pokemon) const;

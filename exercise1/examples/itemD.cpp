@@ -100,8 +100,8 @@ void showMainMenu() {
     cout << "5. Guardar Pokedex" << endl;
     cout << "6. Guardar Pokedex como" << endl;
     cout << "7. Cargar Pokedex de un archivo" << endl;
-    cout << "8. Modificar experiencia de un Pokémon" << endl;
-    cout << "9. Salir" << endl;
+    // cout << "8. Modificar experiencia de un Pokémon" << endl;
+    cout << "8. Salir" << endl;
     cout << "Ingrese su opción: ";
 }
 
@@ -221,7 +221,7 @@ int main() {
                 }
                 
                 string filename;
-                cout << "Ingrese el nombre del archivo a cargar: ";
+                cout << "Ingrese el nombre del archivo a cargar (Sin .bin): ";
                 getline(cin, filename);
                 
                 try {
@@ -235,31 +235,31 @@ int main() {
                 pressEnterToContinue();
                 break;
             }
+            // case 8: {
+            //     if (tempPokemon == nullptr) {
+            //         cout << "Primero debe crear un Pokémon (opción 2)." << endl;
+            //         pressEnterToContinue();
+            //         break;
+            //     }
+                
+            //     cout << "Pokémon actual: " << *tempPokemon << endl;
+                
+            //     experience_t newExp;
+            //     cout << "Ingrese la nueva experiencia: ";
+            //     newExp = getValidIntInput();
+                
+            //     tempPokemon->setExperience(newExp);
+            //     cout << "Experiencia actualizada. Pokémon ahora: " << *tempPokemon << endl;
+            //     pressEnterToContinue();
+            //     break;
+            // }
             case 8: {
-                if (tempPokemon == nullptr) {
-                    cout << "Primero debe crear un Pokémon (opción 2)." << endl;
-                    pressEnterToContinue();
-                    break;
-                }
-                
-                cout << "Pokémon actual: " << *tempPokemon << endl;
-                
-                experience_t newExp;
-                cout << "Ingrese la nueva experiencia: ";
-                newExp = getValidIntInput();
-                
-                tempPokemon->setExperience(newExp);
-                cout << "Experiencia actualizada. Pokémon ahora: " << *tempPokemon << endl;
-                pressEnterToContinue();
-                break;
-            }
-            case 9: {
                 exit = true;
                 cout << "¡Gracias por usar el sistema de prueba de Pokedex!" << endl;
                 break;
             }
             default: {
-                cout << "Opción inválida. Por favor seleccione una opción válida (1-9)." << endl;
+                cout << "Opción inválida. Por favor seleccione una opción válida (1-8)." << endl;
                 pressEnterToContinue();
                 break;
             }

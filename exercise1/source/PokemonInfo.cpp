@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <cstdint>
 
 using namespace std;
 
@@ -12,7 +11,7 @@ PokemonInfo::PokemonInfo():
     attacksByLevel({{"Ataque 1", 2}, {"Ataque 2", 4}, {"Ataque 3", 8}}),
     nextLevelExperience({0, 500, 1250}) {}
 
-PokemonInfo::PokemonInfo(const string& _type, const string& _description, const u_map_str_dmg _attacksByLevel, const vector<experience_t> _nextLevelExperience): type(_type), description(_description), attacksByLevel(_attacksByLevel), nextLevelExperience(_nextLevelExperience) {}
+PokemonInfo::PokemonInfo(const string& _type, const string& _description, const u_map_str_dmg& _attacksByLevel, const vector<experience_t>& _nextLevelExperience): type(_type), description(_description), attacksByLevel(_attacksByLevel), nextLevelExperience(_nextLevelExperience) {}
 
 string PokemonInfo::getType() const {return type;}
 
@@ -23,7 +22,7 @@ u_map_str_dmg PokemonInfo::getAttacksByLevel() const {return attacksByLevel;}
 vector<experience_t> PokemonInfo::getNextLevelExperience() const {return nextLevelExperience;}
 
 void PokemonInfo::serialize(ofstream& out) const {
-    uint32_t len;
+    size_t len;
     
     len = type.size();
     out.write(reinterpret_cast<const char*>(&len), sizeof(len));
@@ -33,11 +32,11 @@ void PokemonInfo::serialize(ofstream& out) const {
     out.write(reinterpret_cast<const char*>(&len), sizeof(len));
     out.write(description.data(), len);
     
-    uint32_t mapSize = attacksByLevel.size();
+    size_t mapSize = attacksByLevel.size();
     out.write(reinterpret_cast<char*>(&mapSize), sizeof(mapSize));
 
     for (const auto& [atk, dmg] : attacksByLevel) {
-        uint32_t atkLen = atk.size();
+        size_t atkLen = atk.size();
         out.write(reinterpret_cast<char*>(&atkLen), sizeof(atkLen));
         out.write(atk.data(), atkLen);
 
@@ -45,7 +44,7 @@ void PokemonInfo::serialize(ofstream& out) const {
         out.write(reinterpret_cast<char*>(&dmgCopy), sizeof(dmgCopy));
     }
 
-    uint32_t vecSize = nextLevelExperience.size();
+    size_t vecSize = nextLevelExperience.size();
     out.write(reinterpret_cast<char*>(&vecSize), sizeof(vecSize));
 
     for (experience_t e : nextLevelExperience) {
@@ -54,7 +53,7 @@ void PokemonInfo::serialize(ofstream& out) const {
 }
 
 void PokemonInfo::deserialize(ifstream& in) {
-    uint32_t len;
+    size_t len;
 
     in.read(reinterpret_cast<char*>(&len), sizeof(len));
     type.resize(len);
@@ -64,12 +63,12 @@ void PokemonInfo::deserialize(ifstream& in) {
     description.resize(len);
     in.read(&description[0], len);
     
-    uint32_t mapSize;
+    size_t mapSize;
     in.read(reinterpret_cast<char*>(&mapSize), sizeof(mapSize));
     attacksByLevel.clear();
 
-    for (uint32_t i = 0; i < mapSize; ++i) {
-        uint32_t atkLen; in.read(reinterpret_cast<char*>(&atkLen), sizeof(atkLen));
+    for (size_t i = 0; i < mapSize; ++i) {
+        size_t atkLen; in.read(reinterpret_cast<char*>(&atkLen), sizeof(atkLen));
         string atk; atk.resize(atkLen);
         in.read(&atk[0], atkLen);
 
@@ -77,11 +76,11 @@ void PokemonInfo::deserialize(ifstream& in) {
         attacksByLevel[atk] = dmg;
     }
 
-    uint32_t vecSize;
+    size_t vecSize;
     in.read(reinterpret_cast<char*>(&vecSize), sizeof(vecSize));
     nextLevelExperience.resize(vecSize);
     
-    for (uint32_t i = 0; i < vecSize; ++i) {
+    for (size_t i = 0; i < vecSize; ++i) {
         in.read(reinterpret_cast<char*>(&nextLevelExperience[i]), sizeof(experience_t));
     }
 }

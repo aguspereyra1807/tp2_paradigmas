@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <cstdint>
 
 using namespace std;
 
@@ -19,7 +18,7 @@ experience_t Pokemon::getExperience() const {return experience;}
 void Pokemon::setExperience(const experience_t _experience) {experience = _experience;}
 
 void Pokemon::serialize(ofstream& out) const {
-    uint32_t len = name.size();
+    size_t len = name.size();
     out.write(reinterpret_cast<const char*>(&len), sizeof(len));
     out.write(name.data(), len);
 
@@ -27,9 +26,9 @@ void Pokemon::serialize(ofstream& out) const {
 }
 
 void Pokemon::deserialize(ifstream& in) {
-    uint32_t len;
-
+    size_t len;
     in.read(reinterpret_cast<char*>(&len), sizeof(len));
+
     name.resize(len);
     in.read(&name[0], len);
 
