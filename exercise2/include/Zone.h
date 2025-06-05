@@ -1,26 +1,29 @@
-#pragma once
+// Esto también incesario
 
-#include <unordered_map>
 
-using namespace std;
+// #pragma once
 
-using id_t = unsigned int;
+// #include <unordered_map>
 
-class Zone {
-    private:
-        const id_t id;
-    public:
-        Zone();
-        ~Zone() = default;
+// using namespace std;
 
-        id_t getId() const;
-};
+// using id_t = unsigned int;
 
-namespace std {
-    template<>
-    struct hash<Zone> {
-        size_t operator() (const Zone& zone) const {
-            return hash<id_t>()(zone.getId());
-        }
-    };
-}
+// class Zone {
+//     private:
+//         const id_t id;
+//     public:
+//         Zone();
+//         ~Zone() = default;
+
+//         id_t getId() const;
+// };
+
+// namespace std {
+//     template<>
+//     struct hash<Zone> {
+//         size_t operator() (const Zone& zone) const {
+//             return hash<id_t>()(zone.getId());
+//         }
+//     };
+// }
