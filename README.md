@@ -1,3 +1,11 @@
 # SOLUCIONAR
 
-- En el ejercicio 2 hay que hacer que la consola sea un mutex para que no se sobrepongan los cout
+## exercise2
+
+- Sacar (o implementar) Hangar.h
+- Sacar Zone.h
+
+## General
+
+- Generalizar Makefiles de cada ejercicio
+- Ver como implementar un Makefile para todos en carpeta root (o no)
