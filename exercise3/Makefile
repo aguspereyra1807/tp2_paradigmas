@@ -1,11 +1,10 @@
 BIN:
 	mkdir -p bin/
 
-FLAGS = -std=c++17 -Wall -Wextra -Wpedantic
-SOURCES = source/*.cpp examples/main.cpp
+FLAGS = -std=c++20 -Wall -Wextra -Wpedantic 
 
 main: BIN
-	g++ $(FLAGS) $(SOURCES) -o bin/main
+	g++ -Wall $(FLAGS) source/*.cpp -o bin/main
 
 run: main
 	clear

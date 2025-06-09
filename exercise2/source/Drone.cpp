@@ -3,13 +3,13 @@
 using namespace std;
 
 // Printea el texto dado con el id correspondiente al dron, verificando que ningún otro thread esté printeando (lockea la consola)
-void Drone::log(mutex* permission, string text, id_t id) {
+void Drone::log(mutex* permission, string text, ID_t id) {
     permission->lock();
     cout << "Dron " << id << " " << text << endl;
     permission->unlock();
 }
 
-Drone::Drone(id_t _id, zone_ptr _leftZone, zone_ptr _rightZone)
+Drone::Drone(ID_t _id, zone_ptr _leftZone, zone_ptr _rightZone)
     : id(_id), leftZone(_leftZone), rightZone(_rightZone) {}
 
 // Despega el dron, dejando registro de todo lo que hace. Si en sus zonas laterales está despegando algún otro dron, espera.

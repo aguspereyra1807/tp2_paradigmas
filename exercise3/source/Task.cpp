@@ -1,8 +1,9 @@
 #include "../include/Task.h"
 
 using namespace std;
+using namespace chrono_literals;
 
-Task::Task(id_t _id, id_t _sensorId, std::string _description)
+Task::Task(ID_t _id, ID_t _sensorId, string _description)
     : id(_id), sensorId(_sensorId), description(_description) {
-        this_thread::sleep_for(chrono::milliseconds(150));
+        this_thread::sleep_for(150ms);
 }
