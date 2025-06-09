@@ -1,29 +1,31 @@
 BIN:
 	mkdir -p bin data
 
+FLAGS = -std=c++17 -Wall -Wextra -Wpedantic
+
 b: BIN
-	g++ -std=c++17 -Wall -Wextra -Wpedantic source/*.cpp examples/itemB.cpp -o bin/itemB
+	g++ $(FLAGS) source/*.cpp examples/itemB.cpp -o bin/itemB
 
 run-b: b
 	clear
 	./bin/itemB
 
 c: BIN
-	g++ -std=c++17 -Wall -Wextra -Wpedantic source/*.cpp examples/itemC.cpp -o bin/itemC
+	g++ $(FLAGS) source/*.cpp examples/itemC.cpp -o bin/itemC
 
 run-c: c
 	clear
 	./bin/itemC
 
 d: BIN
-	g++ -std=c++17 -Wall -Wextra -Wpedantic source/*.cpp examples/itemD.cpp -o bin/itemD
+	g++ $(FLAGS) source/*.cpp examples/itemD.cpp -o bin/itemD
 
 run-d: d
 	clear
 	./bin/itemD
 
 d-valgrind: BIN
-	g++ -std=c++17 -Wall -Wextra -Wpedantic -g source/*.cpp examples/itemD.cpp -o bin/itemD
+	g++ $(FLAGS) -g source/*.cpp examples/itemD.cpp -o bin/itemD
 
 run-d-valgrind: d-valgrind
 	clear

@@ -1,11 +1,8 @@
-# SOLUCIONAR
+# Trabajo Práctico Nº2 - Paradigmas de la Programación
 
-## exercise2
+Federico Pizarro, Agustín Pereyra
 
-- Sacar (o implementar) Hangar.h
-- Sacar Zone.h
-
-## General
+## Solucionar
 
 - Generalizar Makefiles de cada ejercicio
 - Ver como implementar un Makefile para todos en carpeta root (o no)
