@@ -37,14 +37,10 @@ int main() {
     }
 
     // .join() a cada thread para que todos se ejecuten completamente
-    for (auto& thread : threadsArr) {
-        thread.join();
-    }
+    for (auto& thread : threadsArr) {thread.join();}
 
     // Se liberan los punteros
-    for (auto& zone : zonesArr) {
-        delete zone;
-    }
+    for (auto& zone : zonesArr) {delete zone;}
     delete consolePermission;
 
     cout << " - TOTAL DE DESPEGUES EXITOSOS -" << endl;
