@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Task::Task(id_t identification, id_t sensorIdentification, string description)
-    : id(identification), sensorId(sensorIdentification), desc(description) {
-        this_thread::sleep_for(chrono::milliseconds(150)); // Demora de 150ms
+Task::Task(id_t _id, id_t _sensorId, std::string _description)
+    : id(_id), sensorId(_sensorId), description(_description) {
+        this_thread::sleep_for(chrono::milliseconds(150));
 }

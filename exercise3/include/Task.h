@@ -11,6 +11,6 @@ using task_list_t = std::queue<Task>;
 struct Task {
     id_t id;
     id_t sensorId;
-    std::string desc; // description
-    Task(id_t identification, id_t sensorIdentification, std::string description);
+    std::string description;
+    Task(id_t _id, id_t _sensorId, std::string _description);
 };
