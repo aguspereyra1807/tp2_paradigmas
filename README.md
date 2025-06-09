@@ -1,6 +1,6 @@
 # Trabajo Práctico Nº2 - Paradigmas de la Programación
 
-Federico Pizarro, Agustín Pereyra
+Federico Pizarro, Agustín Pereyra
 
 ## Solucionar
 

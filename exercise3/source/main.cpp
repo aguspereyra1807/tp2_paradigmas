@@ -7,9 +7,16 @@ using task_list_t = queue<Task>;
 using jthreads_t = vector<jthread>;
 
 // Constantes globales
-const int robotAmount = 3;
-const int sensorAmount = 3;
-const int taskAmountPerSensor = 3;
+#define ROBOT_AMOUNT 3
+#define SENSOR_AMOUNT 3
+#define TASK_AMOUNT_PER_SENSOR 3
+
+// Colores para el << cout (ANSI)
+#define DEFAULT_C "\033[0m"
+#define ROBOT_C "\033[1;36m"
+#define SENSOR_C "\033[1;35m"
+#define TASK_C "\033[33m"
+#define TURN_OFF_C "\033[4;31m"
 
 const vector<string> descriptions = {
     "Temperature inspection in zone A",
@@ -36,12 +43,12 @@ mutex consolePermission; // Consola para no superponer ningún cout
 mutex sensorPermission;
 condition_variable cv;
 task_list_t tasks;
-atomic<int> activeSensors(sensorAmount); // atomic para ver cuántos sensores están activos
+atomic<int> activeSensors(SENSOR_AMOUNT); // atomic para ver cuántos sensores están activos
 
 
 // Cada Sensor agrega tareas a la cola
 void turnOnSensor(ID_t sensorID) {
-    for (int i = 0; i < taskAmountPerSensor; ++i) {
+    for (int i = 0; i < TASK_AMOUNT_PER_SENSOR; ++i) {
         
         ID_t taskID = sensorID + i;
         string taskDesc = descriptions[rand() % descriptions.size()]; // Descripción aleatoria
@@ -54,8 +61,8 @@ void turnOnSensor(ID_t sensorID) {
 
         {
             lock_guard<mutex> consoleLock(consolePermission);
-            cout << "Sensor [#" << setw(2) << setfill('0') << sensorID << "] created   -> Task [#" << 
-            setw(2) << setfill('0') << taskID << "] : '" << taskDesc << "'" << endl;
+            cout << SENSOR_C << "Sensor [#" << setw(2) << setfill('0') << sensorID << "]" << DEFAULT_C << " created   -> " << TASK_C << "Task [#" << 
+            setw(2) << setfill('0') << taskID << "]" << DEFAULT_C << " : '" << taskDesc << "'" << endl;
         }
 
         cv.notify_all();
@@ -86,15 +93,15 @@ void turnOnRobot(ID_t robotID) {
 
             {
                 lock_guard<mutex> consoleLock(consolePermission);
-                cout << "Robot  [#" << setw(2) << setfill('0') << robotID << "] processed -> Task [#" << 
-                setw(2) << setfill('0') << task.id << "] : '" << task.description << "'" << endl;
+                cout << ROBOT_C << "Robot  [#" << setw(2) << setfill('0') << robotID << "]" << DEFAULT_C << " processed ->" << TASK_C <<" Task [#" << 
+                setw(2) << setfill('0') << task.id << "]" << DEFAULT_C << " : '" << task.description << "'" << endl;
             }
         } else if (activeSensors == 0) break;
     } 
 
     {
         lock_guard<mutex> consoleLock(consolePermission);
-        cout << "Robot  [#" << setw(2) << setfill('0') << robotID << "] has turned off" << endl;
+        cout << ROBOT_C << "Robot  [#" << setw(2) << setfill('0') << robotID << "] " << TURN_OFF_C << "has turned off" << DEFAULT_C << endl;
     }
 }
 
@@ -103,11 +110,11 @@ int main() {
 
     // Jthreads así todos terminan sus procesos
     jthreads_t sensors;
-    for (int i = 0; i < sensorAmount; ++i) {
+    for (int i = 0; i < SENSOR_AMOUNT; ++i) {
         sensors.emplace_back(turnOnSensor, i); // Sensores Id [00 - 0N]
     }
     jthreads_t robots;
-    for (int i = 0; i < robotAmount; ++i) {
+    for (int i = 0; i < ROBOT_AMOUNT; ++i) {
         robots.emplace_back(turnOnRobot, i*10+i);  // Robots Id [00 - NN]
 
     }
