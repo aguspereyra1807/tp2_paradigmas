@@ -1,12 +1,14 @@
 \documentclass{article}
 \usepackage{multicol}
 \usepackage[a4paper, margin=1.5cm]{geometry}
-\usepackage{times}
+\usepackage{listings}
+\usepackage[spanish]{babel}
+\usepackage{enumitem}
 
 
 \title{Trabajo Práctico 2}
 \author{Federico Pizarro, Agustín Pereyra}
-
+\date{\today}
 \begin{document}
 
 
@@ -21,6 +23,56 @@
 
 
 \section{Sistema de Monitoreo y Procesamiento de Robots Autónomos}
+\quad Para la resolución de esta parte, se hizo uso de una sola estructura
+llamada \lstinline|Task|, la cuál tiene las propiedades de las tareas
+emitidas por los Sensores y procesadas por los Robots, ambos
+implementados como hilos (threads). Además está casi todo el código
+dentro del mismo archivo source, main.cpp, y lo único fuera de él es tanto
+la implementación como la definición de la estructura.
+
+\quad El struct \lstinline|Task| solo contiene el ID del mismo, el ID del
+sensor que lo generó y una descripción del mismo, la cual se elige aleatoriamente
+de un array de descripciones genéricas. Además tiene solo un constructor que tiene
+como función adicional, simular el delay de 175ms de la creación de una tarea.
+
+\quad Cuando el programa comienza, se definen tanto las constantes como las variables
+globales, entre ellas podemos destacar a los 2 objetos \lstinline|std::mutex|, encargados
+de sincronizar tanto el uso de la consola como de la \lstinline|std::queue| de tasks,
+al objeto \lstinline|std::atomic| que lleva la cuenta de los sensores activos y a la variable
+y a la variable condicional \lstinline|std::condition\_variable| usada para sincronizar a
+los sensores con los robots.
+
+Luego se inician los threads definidos como \lstinline|std::jthreads| para que todos sean
+ejecutados por completo y no puedan ser interrumpidos. Luego el funcionamiento se rige por 
+la siguiente estructura para cada hilo:
+
+\subsection{Sensores}
+\begin{enumerate}[label=\Roman*.]
+    \item Por cada tarea a generar 
+    \begin{enumerate}[label=\roman*.]
+        \item Se bloquea el \lstinline|std::mutex| de la queue para crear la tarea,
+        asignando los atributos y agregándola a la cola.
+        \item Se bloque la consola y se hace el \textit{log} respectivo.
+        \item Se notifica a los robots (que están en espera) que hay una tarea disponible
+        mediante la variable condicional.
+    \end{enumerate}
+    \item Lockeando el mutex destinado a los sensores, se actualiza el contador atómico y se 
+    verifica si es el último sensor. Si es el caso se notifica a los robots.
+\end{enumerate}
+
+\subsection{Robots}
+\begin{enumerate}[label=\Roman*.]
+    \item Mientras que hayan sensores activos o tareas disponibles
+    \begin{enumerate}[label=\roman*.]
+        \item Espera hasta ser notificado por los sensores que hay una tarea nueva disponible,
+        o que terminó el último sensor
+        \item Se quita la tarea de la cola y se la procesa (esperando el respectivo acceso mediante
+        el mutex)
+        \item Se simula el delay del procesamiento de la tarea de 250ms
+        \item Se hace el \textit{log} del procesamiento lockeando primero la consola.
+    \end{enumerate}
+    \item Se loggea la finalización del trabajo del Robot
+\end{enumerate}
 \section*{Aprendizaje}
 \end{multicols}
 \end{document}
