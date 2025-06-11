@@ -1,6 +1,7 @@
 #include "../include/Drone.h"
 
 using namespace std;
+using namespace chrono_literals;
 
 // Printea el texto dado con el id correspondiente al dron, verificando que ningún otro thread esté printeando (lockea la consola)
 void Drone::log(mutex* permission, string text, ID_t id, const char* color) {
@@ -20,7 +21,7 @@ void Drone::takeOff(mutex* consolePermission) {
     lock(*leftZone, *rightZone); // multiple lock para evitar un deadlock, el dron esperará a que se liberen sus zonas laterales
     
     log(consolePermission, string("despegando..."), id, TAKE_OFF_C);
-    this_thread::sleep_for(chrono::seconds(5)); // 5 segundos hasta alcanzar los 10m de altura
+    this_thread::sleep_for(5s);
     log(consolePermission, string("alcanzó altura de 10m"), id, FINISH_C);
 
     // Ahora la zonas están liberadas para el resto

@@ -53,15 +53,16 @@
 \hspace{0.02\textwidth}
 \begin{minipage}{0.7\textwidth}
     {\fontsize{32}{36}\selectfont\bfseries\color{udesaBlue}\fontfamily{phv}\selectfont Trabajo Práctico 2}\\
-    {\fontsize{20}{24}\selectfont\bfseries\itshape\color{udesaGreen} Paradigmas de la Programación}
+    {\fontsize{20}{24}\selectfont\bfseries\itshape\color{udesaGreen}\fontfamily{phv}\selectfont Paradigmas de la Programación}
 \end{minipage}
 
 \begin{minipage}{0.8\textwidth}
     {\large\textbf{\color{udesaBlue} Pereyra Agustín$^{1}$, \color{udesaGreen}Pizzaro Federico$^{2}$}}\\
     {\itshape\small
     Universidad de San Andrés, Provincia de Buenos Aires, Argentina\\
-    $^1$\href{mailto:apereyra@udesa.edu.ar}{apereyra@udesa.edu.ar}\\
-    $^2$\href{mailto:fpizarro@udesa.edu.ar}{fpizarro@udesa.edu.ar}
+    {\normalfont{\color{udesaBlue}Ingeniería} en {\color{udesaGreen}Inteligencia Artificial}}\\
+    \scriptsize {$^1$\href{mailto:apereyra@udesa.edu.ar}{apereyra@udesa.edu.ar}\\
+    $^2$\href{mailto:fpizarro@udesa.edu.ar}{fpizarro@udesa.edu.ar}}
 }
 \end{minipage}
 \vspace{0.5cm}
@@ -82,10 +83,10 @@ compartidos como también serialización, uso de clases y structs, containers y 
 en \lstinline|C++| a partir de diferentes ejercicios prácticos.
 }
 \begin{center}
-    {\small\itshape\textbf{Aclaración:} Para cada ejercicio se diseñó un archivo \lstinline|Makefile|
+    \small\itshape\textbf{Aclaración:} Para cada ejercicio se diseñó un archivo \lstinline|Makefile|
     para automatizar la compilación y ejecución con \lstinline|g++| de cada uno de los ejercicios, 
     utilizando las flags \lstinline|-Wall| \lstinline|-Wextra|, \lstinline|-Wpedantic|. En cada sección se detallan
-    los comandos correspondientes para cada uno} 
+    los comandos correspondientes para cada uno 
 \end{center}
 
 \section{Pokedex}
@@ -93,6 +94,25 @@ en \lstinline|C++| a partir de diferentes ejercicios prácticos.
 
 \section{Control de Aeronave en Hangar Automatizado}
 
+Para que cada Dron espere a que sus zonas laterales estén libres para poder despegar, se 
+utilizaron punteros de \lstinline|std::mutex| como atributos de la clase \lstinline|Dron|,
+de manera tal que cada dron tiene los mutex de sus 2 zonas laterales, e intenta lockearlos
+para que le permita despegar. Si algún otro dron tiene lockeado al menos 1 de sus zonas este 
+tendrá imposibilitado el despegue y quedará a la espera de que se liberen.
+
+\subsection{Dron}
+
+Como ya fue mencionado contiene como atributo 2 punteros 2 mutex, representando sus 2 zonas
+laterales. Además tiene un ID para identificar al mismo.
+
+De forma de métodos incluye su constructor, un logger que se usa de forma privada dentro del
+de despegue \lstinline|takeOff()|. Esta última simula la situación de despegue de un Dron, esperando
+la liberación de sus zonas laterales y la demora para alcanzar los 10m de altura.
+
+\subsection{Hagnar}
+
+La situación del Hangar se representa en el código principal, en donde se inicializan tanto 
+las zonas como los drones y se inicia un \lstinline|std::thread| por cada uno de los drones
 
 
 \subsection{Compilación y Ejecución}
