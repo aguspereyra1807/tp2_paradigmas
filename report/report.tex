@@ -43,7 +43,7 @@
 % HEAD %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\vspace*{1cm} 
+\vspace*{1.5cm} 
 
 {\noindent\rule{\textwidth}{0.5pt}}
 \noindent
@@ -107,13 +107,17 @@ laterales. Además tiene un ID para identificar al mismo.
 
 De forma de métodos incluye su constructor, un logger que se usa de forma privada dentro del
 de despegue \lstinline|takeOff()|. Esta última simula la situación de despegue de un Dron, esperando
-la liberación de sus zonas laterales y la demora para alcanzar los 10m de altura.
+la liberación de sus zonas laterales, el cual se logra con un \lstinline|multiple-lock| de los mutex 
+respectivos a cada zona lateral así evitando un posible \textit{deadlock}. Además, una vez ya habiendo
+despegado, se aparenta el tiempo de demora al alcance de los 10m necesarios para habilitar a los drones
+cercanos poder despegar.
 
-\subsection{Hagnar}
+\subsection{Hangar}
 
 La situación del Hangar se representa en el código principal, en donde se inicializan tanto 
-las zonas como los drones y se inicia un \lstinline|std::thread| por cada uno de los drones
-
+las zonas como los drones y se inicia un \lstinline|std::thread| por cada uno de los drones.
+Luego se asegura que el programa espere a que terminen de ejecutarse por completo los threads 
+antes de que se liberen los punteros a las zonas (mutex).
 
 \subsection{Compilación y Ejecución}
 
@@ -122,10 +126,9 @@ Posicionandose dentro de la carpeta \lstinline|exercise2|:
 \begin{enumerate}[label=\roman*.]
     \item \lstinline|make main|: compilar
     \item \lstinline|make run|: compilar y ejecutar
-    \item \lstinline|make run-valgrind|: compilar y ejecutar con \lstinline|Valgrind|
+    \item \lstinline|make run-valgrind|: compilar y ejecutar con \\ \lstinline|Valgrind|
     \item \lstinline|make clean|: eliminar ejecutables
 \end{enumerate}
-
 
 \section{Sistema de Monitoreo y Procesamiento de Robots Autónomos}
 

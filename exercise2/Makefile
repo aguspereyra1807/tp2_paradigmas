@@ -1,7 +1,7 @@
 BIN:
 	mkdir -p bin/
 
-FLAGS = -std=c++17 -Wall -Wextra -Wpedantic
+FLAGS = -std=c++20 -Wall -Wextra -Wpedantic
 SOURCES = source/*.cpp examples/main.cpp
 
 main: BIN
