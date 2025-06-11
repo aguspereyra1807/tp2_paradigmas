@@ -19,7 +19,8 @@
 \usepackage{hyperref}
 
 \usepackage[svgnames]{xcolor}
-\definecolor{myblue}{HTML}{00427e}
+\definecolor{udesaBlue}{HTML}{00427e}
+\definecolor{udesaGreen}{HTML}{459616}
 \usepackage{titlesec}
 
 \usepackage{helvet}
@@ -34,12 +35,12 @@
 \end{minipage}
 \hspace{0.02\textwidth}
 \begin{minipage}{0.7\textwidth}
-    {\fontsize{32}{36}\selectfont\bfseries\color{myblue}\fontfamily{phv}\selectfont Trabajo Práctico 2}\\
-    {\fontsize{20}{24}\selectfont\bfseries\itshape\color{myblue} Paradigmas de la Programación}
+    {\fontsize{32}{36}\selectfont\bfseries\color{udesaBlue}\fontfamily{phv}\selectfont Trabajo Práctico 2}\\
+    {\fontsize{20}{24}\selectfont\bfseries\itshape\color{udesaGreen} Paradigmas de la Programación}
 \end{minipage}
 
 \begin{minipage}{0.8\textwidth}
-    {\large\textbf{\color{myblue} Pereyra Agustín$^{1}$, Pizzaro Federico$^{2}$}}\\
+    {\large\textbf{\color{udesaBlue} Pereyra Agustín$^{1}$, \color{udesaGreen}Pizzaro Federico$^{2}$}}\\
     {\itshape\small
     Universidad de San Andrés, Buenos Aires, Argentina\\
     $^1$\href{mailto:apereyra@udesa.edu.ar}{apereyra@udesa.edu.ar}\\
@@ -61,8 +62,15 @@
 {\bfseries\selectfont Este trabajo tiene el objetivo de afianzar los conceptos de
 \textit{Multithreading} o programación multi-hilos, con sincronización y uso de datos
 compartidos como también serialización, uso de clases y structs, containers y streams
-en \lstinline|C++|
+en \lstinline|C++| a partir de diferentes ejercicios prácticos.
 }
+\begin{center}
+    {\small\itshape\textbf{Aclaración:} Para cada ejercicio se diseñó un archivo \lstinline|Makefile|
+    para automatizar la compilación y ejecución con \lstinline|g++| de cada uno de los ejercicios, 
+    utilizando las flags \lstinline|-Wall| \lstinline|-Wextra|, \lstinline|-Wpedantic|. En cada sección se detallan
+    los comandos correspondientes para cada uno} 
+\end{center}
+
 \section{Pokedex}
 
 
@@ -70,6 +78,7 @@ en \lstinline|C++|
 
 
 \section{Sistema de Monitoreo y Procesamiento de Robots Autónomos}
+
 Para la resolución de esta parte, se hizo uso de una sola estructura
 llamada \lstinline|Task|, la cuál tiene las propiedades de las tareas
 emitidas por los Sensores y procesadas por los Robots, ambos
@@ -94,6 +103,7 @@ ejecutados por completo y no puedan ser interrumpidos. Luego el funcionamiento s
 la siguiente estructura para cada hilo:
 
 \subsection{Sensores}
+
 \begin{enumerate}[label=\Roman*.]
     \item Por cada tarea a generar 
     \begin{enumerate}[label=\roman*.]
@@ -108,6 +118,7 @@ la siguiente estructura para cada hilo:
 \end{enumerate}
 
 \subsection{Robots}
+
 \begin{enumerate}[label=\Roman*.]
     \item Mientras que hayan sensores activos o tareas disponibles
     \begin{enumerate}[label=\roman*.]
@@ -119,6 +130,17 @@ la siguiente estructura para cada hilo:
         \item Se hace el \textit{log} del procesamiento lockeando primero la consola.
     \end{enumerate}
     \item Se loggea la finalización del trabajo del Robot
+\end{enumerate}
+
+\subsection{Compilación y Ejecución}
+
+Posicionandose dentro de la carpeta \lstinline|exercise3|:
+
+\begin{enumerate}[label=\roman*.]
+    \item \lstinline|make main|: compilar
+    \item \lstinline|make run|: compilar y ejecutar
+    \item \lstinline|run-valgrind|: compilar y ejecutar con \lstinline|Valgrind|
+    \item \lstinline|make clean|: elimina los ejecutables 
 \end{enumerate}
 \section*{Aprendizaje}
 \end{multicols}
