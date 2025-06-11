@@ -3,9 +3,9 @@
 using namespace std;
 
 // Printea el texto dado con el id correspondiente al dron, verificando que ningún otro thread esté printeando (lockea la consola)
-void Drone::log(mutex* permission, string text, ID_t id) {
+void Drone::log(mutex* permission, string text, ID_t id, const char* color) {
     permission->lock();
-    cout << "Dron " << id << " " << text << endl;
+    cout << "Dron [#" << id << "] " << color << text << DEFAULT_C << endl;
     permission->unlock();
 }
 
@@ -15,13 +15,13 @@ Drone::Drone(ID_t _id, zone_ptr _leftZone, zone_ptr _rightZone)
 // Despega el dron, dejando registro de todo lo que hace. Si en sus zonas laterales está despegando algún otro dron, espera.
 // El dron una vez que despega demora 5 segundos en alcanzar los 10m
 void Drone::takeOff(mutex* consolePermission) {
-    log(consolePermission, string("esperando para despegar..."), id);
+    log(consolePermission, string("esperando para despegar..."), id, WAITING_C);
 
     lock(*leftZone, *rightZone); // multiple lock para evitar un deadlock, el dron esperará a que se liberen sus zonas laterales
     
-    log(consolePermission, string("despegando..."), id);
+    log(consolePermission, string("despegando..."), id, TAKE_OFF_C);
     this_thread::sleep_for(chrono::seconds(5)); // 5 segundos hasta alcanzar los 10m de altura
-    log(consolePermission, string("alcanzó altura de 10m"), id);
+    log(consolePermission, string("alcanzó altura de 10m"), id, FINISH_C);
 
     // Ahora la zonas están liberadas para el resto
     leftZone->unlock();

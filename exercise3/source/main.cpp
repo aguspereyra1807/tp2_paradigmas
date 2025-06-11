@@ -1,22 +1,10 @@
 #include "../include/Task.h"
 
-// Definiciones de tipos
+// namespaces y tipos
 using namespace std;
 using namespace chrono_literals;
 using task_list_t = queue<Task>;
 using jthreads_t = vector<jthread>;
-
-// Constantes globales
-#define ROBOT_AMOUNT 3
-#define SENSOR_AMOUNT 3
-#define TASK_AMOUNT_PER_SENSOR 3
-
-// Colores para el << cout (ANSI)
-#define DEFAULT_C "\033[0m"
-#define ROBOT_C "\033[1;36m"
-#define SENSOR_C "\033[1;35m"
-#define TASK_C "\033[33m"
-#define TURN_OFF_C "\033[4;31m"
 
 // Variables globales
 mutex consolePermission; // Consola para no superponer ningún cout
