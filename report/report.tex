@@ -1,21 +1,68 @@
-\documentclass{article}
-\usepackage{multicol}
-\usepackage[a4paper, margin=1.5cm]{geometry}
-\usepackage{listings}
-\usepackage[spanish]{babel}
+\documentclass[11pt, a4paper]{article}
+\usepackage{multicol} % Para la doble columna
+\usepackage[margin=1.5cm]{geometry} % Márgenes
+\usepackage{listings} % Código
+\usepackage[spanish]{babel} % Setear en español
+\usepackage{graphicx}
+
 \usepackage{enumitem}
+\setlist{noitemsep} % Saca el espacio entre los enums
 
+\usepackage{lastpage} % Poner máximo de páginas
+\usepackage{graphicx} % Para imágnes
 
-\title{Trabajo Práctico 2}
-\author{Federico Pizarro, Agustín Pereyra}
-\date{\today}
+% Font
+\usepackage[T1]{fontenc}  
+\usepackage[utf8]{inputenc} 
+\usepackage{times}
+
+\usepackage{hyperref}
+
+\usepackage[svgnames]{xcolor}
+\definecolor{myblue}{HTML}{00427e}
+\usepackage{titlesec}
+
+\usepackage{helvet}
+
 \begin{document}
+\vspace*{1cm}
 
+{\noindent\rule{\textwidth}{0.5pt}}
+\noindent
+\begin{minipage}{0.24\textwidth}
+    \includegraphics[width=\linewidth]{figures/logo2.png}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}{0.7\textwidth}
+    {\fontsize{32}{36}\selectfont\bfseries\color{myblue}\fontfamily{phv}\selectfont Trabajo Práctico 2}\\
+    {\fontsize{20}{24}\selectfont\bfseries\itshape\color{myblue} Paradigmas de la Programación}
+\end{minipage}
 
+\begin{minipage}{0.8\textwidth}
+    {\large\textbf{\color{myblue} Pereyra Agustín$^{1}$, Pizzaro Federico$^{2}$}}\\
+    {\itshape\small
+    Universidad de San Andrés, Buenos Aires, Argentina\\
+    $^1$\href{mailto:apereyra@udesa.edu.ar}{apereyra@udesa.edu.ar}\\
+    $^2$\href{mailto:fpizarro@udesa.edu.ar}{fpizarro@udesa.edu.ar}
+}
+\end{minipage}
+\vspace{0.5cm}
 
-\maketitle
+{\noindent\rule{\textwidth}{0.5pt}}
+
+\vspace{0.1cm}
+\begin{center}
+    {\large \today}
+\end{center}
+\vspace{0.1cm}
+
 \begin{multicols}{2}
 
+{\bfseries\selectfont Este trabajo tiene el objetivo de afianzar los conceptos de
+\textit{Multithreading} o programación multi-hilos, con sincronización y uso de datos
+compartidos como también serialización, uso de clases y structs, containers y streams
+en \lstinline|C++|
+}
 \section{Pokedex}
 
 
@@ -23,19 +70,19 @@
 
 
 \section{Sistema de Monitoreo y Procesamiento de Robots Autónomos}
-\quad Para la resolución de esta parte, se hizo uso de una sola estructura
+Para la resolución de esta parte, se hizo uso de una sola estructura
 llamada \lstinline|Task|, la cuál tiene las propiedades de las tareas
 emitidas por los Sensores y procesadas por los Robots, ambos
 implementados como hilos (threads). Además está casi todo el código
 dentro del mismo archivo source, main.cpp, y lo único fuera de él es tanto
 la implementación como la definición de la estructura.
 
-\quad El struct \lstinline|Task| solo contiene el ID del mismo, el ID del
+El struct \lstinline|Task| solo contiene el ID del mismo, el ID del
 sensor que lo generó y una descripción del mismo, la cual se elige aleatoriamente
 de un array de descripciones genéricas. Además tiene solo un constructor que tiene
 como función adicional, simular el delay de 175ms de la creación de una tarea.
 
-\quad Cuando el programa comienza, se definen tanto las constantes como las variables
+Cuando el programa comienza, se definen tanto las constantes como las variables
 globales, entre ellas podemos destacar a los 2 objetos \lstinline|std::mutex|, encargados
 de sincronizar tanto el uso de la consola como de la \lstinline|std::queue| de tasks,
 al objeto \lstinline|std::atomic| que lleva la cuenta de los sensores activos y a la variable
