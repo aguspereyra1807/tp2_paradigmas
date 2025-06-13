@@ -1,9 +1,8 @@
 .vscode/
 bin/
 data/
-report/
+report/*
 
 !report/report.tex
 !report/report.pdf
 !report/figures/
-!report/figures/**

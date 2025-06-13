@@ -23,7 +23,6 @@
 \usepackage{enumitem}
 \setlist{noitemsep} % Saca el espacio entre los enums
 
-
 \usepackage{graphicx} % Para imágenes
 
 % Font
@@ -53,16 +52,16 @@
 \hspace{0.02\textwidth}
 \begin{minipage}{0.7\textwidth}
     {\fontsize{32}{36}\selectfont\bfseries\color{udesaBlue}\fontfamily{phv}\selectfont Trabajo Práctico 2}\\
-    {\fontsize{20}{24}\selectfont\bfseries\itshape\color{udesaGreen}\fontfamily{phv}\selectfont Paradigmas de la Programación}
+    {\fontsize{20}{24}\selectfont\bfseries\itshape\color{udesaGreen}\fontfamily{phv}\selectfont Paradigmas de Programación}
 \end{minipage}
 
 \begin{minipage}{0.8\textwidth}
-    {\large\textbf{\color{udesaBlue} Pereyra Agustín$^{1}$, \color{udesaGreen}Pizzaro Federico$^{2}$}}\\
+    {\large\textbf{\color{udesaBlue} Pereyra Agustín$^{1}$, \color{udesaBlue}Pizarro Federico$^{2}$}}\\
     {\itshape\small
     Universidad de San Andrés, Provincia de Buenos Aires, Argentina\\
-    {\normalfont{\color{udesaBlue}Ingeniería} en {\color{udesaGreen}Inteligencia Artificial}}\\
+    {\normalfont{\color{udesaBlue}Ingeniería en Inteligencia Artificial}}\\
     \scriptsize {$^1$\href{mailto:apereyra@udesa.edu.ar}{apereyra@udesa.edu.ar}\\
-    $^2$\href{mailto:fpizarro@udesa.edu.ar}{fpizarro@udesa.edu.ar}}
+    $^2$\href{mailto:fpizarrodalmaso@udesa.edu.ar}{fpizarrodalmaso@udesa.edu.ar}}
 }
 \end{minipage}
 \vspace{0.5cm}
@@ -78,96 +77,71 @@
 \begin{multicols}{2}
 
 {\bfseries\selectfont Este trabajo tiene el objetivo de afianzar los conceptos de
-\textit{Multithreading} o programación multi-hilos, con sincronización y uso de datos
-compartidos como también serialización, uso de clases y structs, containers y streams
-en \lstinline|C++| a partir de diferentes ejercicios prácticos.
+\textit{Multithreading} o programación multi-hilos, con sincronización y uso de datos compartidos como también serialización, uso de clases y structs, containers y streams en \texttt{C++} a partir de diferentes ejercicios prácticos.
 }
 \begin{center}
-    \small\itshape\textbf{Aclaración:} Para cada ejercicio se diseñó un archivo \lstinline|Makefile|
-    para automatizar la compilación y ejecución con \lstinline|g++| de cada uno de los ejercicios, 
-    utilizando las flags \lstinline|-Wall| \lstinline|-Wextra|, \lstinline|-Wpedantic|. En cada sección se detallan
-    los comandos correspondientes para cada uno 
+    \small\itshape\textbf{Aclaración:} Para cada ejercicio se diseñó un archivo \texttt{Makefile} para automatizar la compilación y ejecución con \texttt{g++} de cada uno de los ejercicios, utilizando las flags \texttt{-Wall} \texttt{-Wextra}, \texttt{-Wpedantic}. En cada sección se detallan los comandos correspondientes para cada uno 
 \end{center}
 
 \section{Pokedex}
 
+\subsection{Pokemon}
+
+La clase \texttt{Pokemon} cuenta con los atributos privados nombre y nivel de experiencia, el cual es un entero positivo.
+
+Se sobrecarga el operador \texttt{==} para poder utilizar la función \texttt{.find()} de los \texttt{unordered\_map} para comparar las claves, ya que se guardan como la key del mapa. Además, especializamos la plantilla \texttt{std::hash<Pokemon>}, lo cual permite al mapa hashear el objeto basándose en el nombre del Pokemon.
+
+Implementa métodos constructores, por defecto, con el nombre y también otro con la experiencia. Tiene los getters y setters básicos, funciones de serialización y deserialización. Por último, se sobrecarga el operador \texttt{\<\<}, de forma que se pueda imprimir en consola.
+
+\subsection{PokemonInfo}
+
+
 
 \section{Control de Aeronave en Hangar Automatizado}
 
-Para que cada Dron espere a que sus zonas laterales estén libres para poder despegar, se 
-utilizaron punteros de \lstinline|std::mutex| como atributos de la clase \lstinline|Dron|,
-de manera tal que cada dron tiene los mutex de sus 2 zonas laterales, e intenta lockearlos
-para que le permita despegar. Si algún otro dron tiene lockeado al menos 1 de sus zonas este 
-tendrá imposibilitado el despegue y quedará a la espera de que se liberen.
+Para que cada Dron espere a que sus zonas laterales estén libres para poder despegar, se utilizaron punteros de \texttt{std::mutex} como atributos de la clase \texttt{Dron}, de manera tal que cada dron tiene los mutex de sus 2 zonas laterales, e intenta lockearlos para que le permita despegar. Si algún otro dron tiene lockeado al menos 1 de sus zonas este tendrá imposibilitado el despegue y quedará a la espera de que se liberen.
 
 \subsection{Dron}
 
-Como ya fue mencionado contiene como atributo 2 punteros 2 mutex, representando sus 2 zonas
-laterales. Además tiene un ID para identificar al mismo.
+Como ya fue mencionado contiene como atributo 2 punteros 2 mutex, representando sus 2 zonas laterales. Además tiene un ID para identificar al mismo.
 
-De forma de métodos incluye su constructor, un logger que se usa de forma privada dentro del
-de despegue \lstinline|takeOff()|. Esta última simula la situación de despegue de un Dron, esperando
-la liberación de sus zonas laterales, el cual se logra con un \lstinline|multiple-lock| de los mutex 
-respectivos a cada zona lateral así evitando un posible \textit{deadlock}. Además, una vez ya habiendo
-despegado, se aparenta el tiempo de demora al alcance de los 10m necesarios para habilitar a los drones
-cercanos poder despegar.
+Los métodos implementados son su constructor, un logger que se usa de forma privada dentro del de despegue, y \texttt{takeOff()}. Esta última simula la situación de despegue de un Dron, esperando la liberación de sus zonas laterales, el cual se logra con un \texttt{multiple-lock} de los mutex respectivos a cada zona lateral así evitando un posible \textit{deadlock}. Además, una vez ya habiendo despegado, se aparenta el tiempo de demora al alcance de los 10m necesarios para habilitar a los drones cercanos poder despegar.
 
 \subsection{Hangar}
 
-La situación del Hangar se representa en el código principal, en donde se inicializan tanto 
-las zonas como los drones y se inicia un \lstinline|std::thread| por cada uno de los drones.
-Luego se asegura que el programa espere a que terminen de ejecutarse por completo los threads 
-antes de que se liberen los punteros a las zonas (mutex).
+La situación del Hangar se representa en el código principal, en donde se inicializan tanto las zonas como los drones y se inicia un \texttt{std::thread} por cada uno de los drones. Luego se asegura que el programa espere a que terminen de ejecutarse por completo los threads antes de que se liberen los punteros a las zonas (mutex).
 
 \subsection{Compilación y Ejecución}
 
-Posicionandose dentro de la carpeta \lstinline|exercise2|:
+Posicionandose dentro de la carpeta \texttt{exercise2}:
 
 \begin{enumerate}[label=\roman*.]
-    \item \lstinline|make main|: compilar
-    \item \lstinline|make run|: compilar y ejecutar
-    \item \lstinline|make run-valgrind|: compilar y ejecutar con \\ \lstinline|Valgrind|
-    \item \lstinline|make clean|: eliminar ejecutables
+    \item \texttt{make main}: compilar
+    \item \texttt{make run}: compilar y ejecutar
+    \item \texttt{make run-valgrind}: compilar y ejecutar con \\ \texttt{Valgrind}
+    \item \texttt{make clean}: eliminar ejecutables
 \end{enumerate}
 
 \section{Sistema de Monitoreo y Procesamiento de Robots Autónomos}
 
-Para la resolución de esta parte, se hizo uso de una sola estructura
-llamada \lstinline|Task|, la cuál tiene las propiedades de las tareas
-emitidas por los Sensores y procesadas por los Robots, ambos
-implementados como hilos (threads). Además está casi todo el código
-dentro del mismo archivo source, main.cpp, y lo único fuera de él es tanto
-la implementación como la definición de la estructura.
+Para la resolución de esta parte, se hizo uso de una sola estructura llamada \texttt{Task}, la cuál tiene las propiedades de las tareas emitidas por los Sensores y procesadas por los Robots, ambos implementados como hilos (threads). Además está casi todo el código dentro del mismo archivo source, main.cpp, y lo único fuera de él es tanto la implementación como la definición de la estructura.
 
-El struct \lstinline|Task| solo contiene el ID del mismo, el ID del
-sensor que lo generó y una descripción del mismo, la cual se elige aleatoriamente
-de un array de descripciones genéricas. Además tiene solo un constructor que tiene
-como función adicional, simular el delay de 175ms de la creación de una tarea.
+El struct \texttt{Task} solo contiene el ID del mismo, el ID del sensor que lo generó y una descripción del mismo, la cual se elige aleatoriamente de un array de descripciones genéricas. Además tiene solo un constructor que tiene como función adicional, simular el delay de 175ms de la creación de una tarea.
 
-Cuando el programa comienza, se definen tanto las constantes como las variables
-globales, entre ellas podemos destacar a los 2 objetos \lstinline|std::mutex|, encargados
-de sincronizar tanto el uso de la consola como de la \lstinline|std::queue| de tasks,
-al objeto \lstinline|std::atomic| que lleva la cuenta de los sensores activos y a la variable
-y a la variable condicional \lstinline|std::condition\_variable| usada para sincronizar a
-los sensores con los robots.
+Cuando el programa comienza, se definen tanto las constantes como las variables globales, entre ellas podemos destacar a los 2 objetos \texttt{std::mutex}, encargados de sincronizar tanto el uso de la consola como de la \texttt{std::queue} de tasks, al objeto \texttt{std::atomic} que lleva la cuenta de los sensores activos y a la variable y a la variable condicional \texttt{std::condition\_variable} usada para sincronizar a los sensores con los robots.
 
-Luego se inician los threads definidos como \lstinline|std::jthreads| para que todos sean
-ejecutados por completo y no puedan ser interrumpidos. Luego el funcionamiento se rige por 
-la siguiente estructura para cada hilo:
+Luego se inician los threads definidos como \texttt{std::jthreads} para que todos sean ejecutados por completo y no puedan ser interrumpidos. Luego el funcionamiento se rige por la siguiente estructura para cada hilo:
 
 \subsection{Sensores}
 
 \begin{enumerate}[label=\Roman*.]
     \item Por cada tarea a generar 
     \begin{enumerate}[label=\roman*.]
-        \item Se bloquea el \lstinline|std::mutex| de la queue para crear la tarea,
-        asignando los atributos y agregándola a la cola.
+        \item Se bloquea el \texttt{std::mutex} de la queue para crear la tarea, asignando los atributos y agregándola a la cola.
         \item Se bloque la consola y se hace el \textit{log} respectivo.
-        \item Se notifica a los robots (que están en espera) que hay una tarea disponible
-        mediante la variable condicional.
+        \item Se notifica a los robots (que están en espera) que hay una tarea disponible mediante la variable condicional.
     \end{enumerate}
-    \item Lockeando el mutex destinado a los sensores, se actualiza el contador atómico y se 
-    verifica si es el último sensor. Si es el caso se notifica a los robots.
+    \item Lockeando el mutex destinado a los sensores, se actualiza el contador atómico y se verifica si es el último sensor. Si es el caso se notifica a los robots.
 \end{enumerate}
 
 \subsection{Robots}
@@ -187,13 +161,13 @@ la siguiente estructura para cada hilo:
 
 \subsection{Compilación y Ejecución}
 
-Posicionandose dentro de la carpeta \lstinline|exercise3|:
+Posicionandose dentro de la carpeta \texttt{exercise3}:
 
 \begin{enumerate}[label=\roman*.]
-    \item \lstinline|make main|: compilar
-    \item \lstinline|make run|: compilar y ejecutar
-    \item \lstinline|run-valgrind|: compilar y ejecutar con \lstinline|Valgrind|
-    \item \lstinline|make clean|: elimina ejectuables
+    \item \texttt{make main}: compilar
+    \item \texttt{make run}: compilar y ejecutar
+    \item \texttt{run-valgrind}: compilar y ejecutar con \texttt{Valgrind}
+    \item \texttt{make clean}: elimina ejectuables
 \end{enumerate}
 \section*{Aprendizaje}
 
