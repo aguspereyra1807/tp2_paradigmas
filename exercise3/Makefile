@@ -4,7 +4,7 @@ BIN:
 FLAGS = -std=c++20 -Wall -Wextra -Wpedantic 
 
 main: BIN
-	g++ -Wall $(FLAGS) source/*.cpp -o bin/main
+	g++ -Wall $(FLAGS) source/*.cpp examples/main.cpp -o bin/main
 
 run: main
 	clear
