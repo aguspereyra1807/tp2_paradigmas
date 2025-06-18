@@ -5,8 +5,14 @@
 \usepackage[spanish]{babel} % Setear en español
 \usepackage{graphicx}
 
-% Sacar espacio entre títulos y cuerpo
-\usepackage{titlesec} 
+\usepackage{titlesec}
+% Spacing between lines
+\renewcommand{\baselinestretch}{1.1}
+
+% Spacing between paragraphs
+\setlength{\parskip}{0.25em}
+
+% Title spacing (customize as needed)
 \titlespacing*{\section}{0pt}{1.5ex plus 0.5ex minus .2ex}{1ex minus .2ex}
 \titlespacing*{\subsection}{0pt}{1ex plus 0.3ex minus .2ex}{0.7ex minus .2ex}
 
@@ -74,86 +80,124 @@
     {\large \today}
 \end{center}
 
-\begin{multicols}{2}
-
 {\bfseries\selectfont Este trabajo tiene el objetivo de afianzar los conceptos de
-\textit{Multithreading} o programación multi-hilos, con sincronización y uso de datos compartidos como también serialización, uso de clases y structs, containers y streams en \texttt{C++} a partir de diferentes ejercicios prácticos.
+\textit{Multithreading} o programación multi-hilos, con sincronización y uso de datos compartidos como también serialización, uso de clases y structs, containers y streams en \lstinline|C++| a partir de diferentes ejercicios prácticos.
 }
 \begin{center}
-    \small\itshape\textbf{Aclaración:} Para cada ejercicio se diseñó un archivo \texttt{Makefile} para automatizar la compilación y ejecución con \texttt{g++} de cada uno de los ejercicios, utilizando las flags \texttt{-Wall} \texttt{-Wextra}, \texttt{-Wpedantic}. En cada sección se detallan los comandos correspondientes para cada uno 
+    \small\itshape\textbf{Aclaración:} Para cada ejercicio se diseñó un archivo \lstinline|Makefile| para automatizar la compilación y ejecución con \lstinline|g++| de cada uno de los ejercicios, utilizando las flags \lstinline|-Wall| \lstinline|-Wextra|, \lstinline|-Wpedantic|. En cada sección se detallan los comandos correspondientes para cada uno 
 \end{center}
+
+\begin{multicols}{2}
 
 \section{Pokedex}
 
+Esta ejercitación pide desarrollar un pokedex digital funcional en \lstinline|C++|. Donde se implementarion tres clases \lstinline|Pokemon|, \lstinline|PokemonInfo| y \lstinline|Pokedex|. \textcolor{red}{Definir y defender contenedores para atributos de PokemonInfo.}
+
+Luego, para resolver el ejercicio b se implementó un \lstinline|itemB.cpp| donde se generán los pokemones pedidos y luego se utiliza una función \lstinline|Pokedex::showAll()|, la cual usa únicamente las instancias de \lstinline|Pokemon| para buscar y mostrar la información de los tres pokemones.
+
+En el ejercicio c se pide probar el funcionamiento de una función \lstinline|show|, la cual permita mostrar la información de un pokemon en particular guardado en el pokedex, solamente con la instancia de \lstinline|Pokemon|. Para esto se creó un \lstinline|itemC.cpp| donde se muestra un caso en el que si existe el pokemon y otro donde no existe.
+
+Por último para la consigna opcional del ejercicio d, en \lstinline|itemD.cpp| se implemtó un menú para poder controlar un pokedex, donde se puede guardar pokemones, mostrar uno o varios pokemones, guardar el pokedex, y cargar un pokedex desde un archivo. La idea principal es poder serializar y deserializar todos los elementos del pokedex, es por esto que las clases \lstinline|Pokemon| y \lstinline|PokemonInfo|, cuentan con estos métodos.
+
 \subsection{Pokemon}
 
-La clase \texttt{Pokemon} cuenta con los atributos privados nombre y nivel de experiencia, el cual es un entero positivo.
+La clase \lstinline|Pokemon| cuenta con los atributos privados nombre, y nivel de experiencia, el cual es un entero \\positivo.
 
-Se sobrecarga el operador \texttt{==} para poder utilizar la función \texttt{.find()} de los \texttt{unordered\_map} para comparar las claves, ya que se guardan como la key del mapa. Además, especializamos la plantilla \texttt{std::hash<Pokemon>}, lo cual permite al mapa hashear el objeto basándose en el nombre del Pokemon.
+Implementa métodos constructores, por defecto, con el nombre y también otro con la experiencia, además un destructor por defecto. Tiene los getters y setters básicos, funciones de serialización y deserialización. Además, se sobrecarga el operador \lstinline|<<|, para imprimir en consola.
 
-Implementa métodos constructores, por defecto, con el nombre y también otro con la experiencia. Tiene los getters y setters básicos, funciones de serialización y deserialización. Por último, se sobrecarga el operador \texttt{\<\<}, de forma que se pueda imprimir en consola.
+Se sobrecarga el operador \lstinline|==| para poder utilizar la función \lstinline|.find()| de los \lstinline|unordered_map| para comparar las claves, ya que se guardan como la key del mapa. Por último, especializamos la plantilla \lstinline|std::hash<Pokemon>|, lo cual permite al mapa hashear el objeto basándose en el nombre del pokemon.
 
 \subsection{PokemonInfo}
 
+%!! Definir contenedores. (vectr<pair>, unordered_map, etc).
 
+Se implementaron los atributos privados \lstinline|type| y \lstinline|description|, los cuáles son \lstinline|string| que representan que tipo de pokemon es, y una breve descripción. Además, \lstinline|PokemonInfo| cuenta con un \lstinline|unordered_map<string, damage_t>|, donde \lstinline|damage_t| es un \lstinline|unsigned int|, el cuál representa cuánto daño causa cada ataque. Por último, también cuenta con un \lstinline|vector<experience_t>|, donde \lstinline|experience_t| es también un \lstinline|unsigned int|, en él se guarda la experiencia necesaria para alcanzar el próximo nivel.
+
+Esta clase cuenta con un constructor por defecto, y otro con todos los atributos pasados como argumentos, y también un destructor por defecto. Implementa getters básicos de todos los atributos, y funciones de serialización y deserialización. Por último cuenta con una sobrecarga en el operador \lstinline|<<| para imprimir la información por consola.
+
+\subsection{Pokedex}
+
+En esta clase implementamos dos atributos privados, un \lstinline|unordered_map<Pokemon, PokemonInfo>| donde guardamos cada pokemon como clave, con su respectiva información como valor. Además, un string donde se almacena el nombre del archivo donde se guarda la información del pokedex, esto siempre se guarda en la carpeta \lstinline|data|.
+
+Tiene sus constructores básicos, uno de ellos permite definir en que archivo se guardará la información, y un destructor por defecto. Luego cuenta con un método para corroborar si está vacío y otro para agregar un pokemon al pokedex. Por otro lado se implementan los métodos para mostrar uno o varios pokemones, y los métodos para guardar la información del pokedex en un archivo y también cargar al pokedex la información desde uno.
+
+\subsection{Compilación y Ejecución}
+
+Posicionandose dentro de la carpeta \lstinline|exercise1|:
+
+\begin{enumerate}[label=\roman*.]
+    \item \lstinline|make b|: compilar ejercicio b
+    \item \lstinline|make run-b|: compilar y ejecutar ejercicio b
+    \item \lstinline|make c|: compilar ejercicio c
+    \item \lstinline|make run-c|: compilar y ejecutar ejercicio c
+    \item \lstinline|make d|: compilar ejercicio d
+    \item \lstinline|make run-d|: compilar y ejecutar ejercicio d
+    \item \lstinline|make d-valgrind|: ídem d con \lstinline|Valgrind|
+    \item \lstinline|make run-d-valgrind|: ídem run-d con \lstinline|Valgrind|
+    \item \lstinline|make all|: compila los tres ejercicios
+    \item \lstinline|make run-all|: compila y ejecuta los tres ejercicios
+    \item \lstinline|make clean|: eliminar ejecutables y guardados
+\end{enumerate}
 
 \section{Control de Aeronave en Hangar Automatizado}
 
-Para que cada Dron espere a que sus zonas laterales estén libres para poder despegar, se utilizaron punteros de \texttt{std::mutex} como atributos de la clase \texttt{Dron}, de manera tal que cada dron tiene los mutex de sus 2 zonas laterales, e intenta lockearlos para que le permita despegar. Si algún otro dron tiene lockeado al menos 1 de sus zonas este tendrá imposibilitado el despegue y quedará a la espera de que se liberen.
+Para que cada Dron espere a que sus zonas laterales estén libres para poder despegar, se utilizaron punteros de \lstinline|std::mutex| como atributos de la clase \lstinline|Dron|, de manera tal que cada dron tiene los mutex de sus 2 zonas laterales, e intenta lockearlos para que le permita despegar. Si algún otro dron tiene lockeado al menos 1 de sus zonas este tendrá imposibilitado el despegue y quedará a la espera de que se liberen.
 
 \subsection{Dron}
 
 Como ya fue mencionado contiene como atributo 2 punteros 2 mutex, representando sus 2 zonas laterales. Además tiene un ID para identificar al mismo.
 
-Los métodos implementados son su constructor, un logger que se usa de forma privada dentro del de despegue, y \texttt{takeOff()}. Esta última simula la situación de despegue de un Dron, esperando la liberación de sus zonas laterales, el cual se logra con un \texttt{multiple-lock} de los mutex respectivos a cada zona lateral así evitando un posible \textit{deadlock}. Además, una vez ya habiendo despegado, se aparenta el tiempo de demora al alcance de los 10m necesarios para habilitar a los drones cercanos poder despegar.
+Los métodos implementados son su constructor, un logger que se usa de forma privada dentro del de despegue, y \lstinline|takeOff()|. Esta última simula la situación de despegue de un Dron, esperando la liberación de sus zonas laterales, el cual se logra con un \lstinline|multiple-lock| de los mutex respectivos a cada zona lateral así evitando un posible \textit{deadlock}. Además, una vez ya habiendo despegado, se aparenta el tiempo de demora al alcance de los 10m necesarios para habilitar a los drones cercanos poder despegar.
 
 \subsection{Hangar}
 
-La situación del Hangar se representa en el código principal, en donde se inicializan tanto las zonas como los drones y se inicia un \texttt{std::thread} por cada uno de los drones. Luego se asegura que el programa espere a que terminen de ejecutarse por completo los threads antes de que se liberen los punteros a las zonas (mutex).
+La situación del Hangar se representa en el código principal, en donde se inicializan tanto las zonas como los drones y se inicia un \lstinline|std::thread| por cada uno de los drones. Luego se asegura que el programa espere a que terminen de ejecutarse por completo los threads antes de que se liberen los punteros a las zonas (mutex).
 
 \subsection{Compilación y Ejecución}
 
-Posicionandose dentro de la carpeta \texttt{exercise2}:
+Posicionandose dentro de la carpeta \lstinline|exercise2|:
 
 \begin{enumerate}[label=\roman*.]
-    \item \texttt{make main}: compilar
-    \item \texttt{make run}: compilar y ejecutar
-    \item \texttt{make run-valgrind}: compilar y ejecutar con \\ \texttt{Valgrind}
-    \item \texttt{make clean}: eliminar ejecutables
+    \item \lstinline|make main|: compilar
+    \item \lstinline|make run|: compilar y ejecutar
+    \item \lstinline|make run-valgrind|: compilar y ejecutar con \\ \lstinline|Valgrind|
+    \item \lstinline|make clean|: eliminar ejecutables
 \end{enumerate}
+
+\newpage
 
 \section{Sistema de Monitoreo y Procesamiento de Robots Autónomos}
 
-Para la resolución de esta parte, se hizo uso de una sola estructura llamada \texttt{Task}, la cuál tiene las propiedades de las tareas emitidas por los Sensores y procesadas por los Robots, ambos implementados como hilos (threads). Además está casi todo el código dentro del mismo archivo source, main.cpp, y lo único fuera de él es tanto la implementación como la definición de la estructura.
+Para la resolución de esta parte, se hizo uso de una sola estructura llamada \lstinline|Task|, la cuál tiene las propiedades de las tareas emitidas por los Sensores y procesadas por los Robots, ambos implementados como hilos (threads). Además está casi todo el código dentro del mismo archivo source, main.cpp, y lo único fuera de él es tanto la implementación como la definición de la estructura.
 
-El struct \texttt{Task} solo contiene el ID del mismo, el ID del sensor que lo generó y una descripción del mismo, la cual se elige aleatoriamente de un array de descripciones genéricas. Además tiene solo un constructor que tiene como función adicional, simular el delay de 175ms de la creación de una tarea.
+El struct \lstinline|Task| solo contiene el ID del mismo, el ID del sensor que lo generó y una descripción del mismo, la cual se elige aleatoriamente de un array de descripciones genéricas. Además tiene solo un constructor que tiene como función adicional, simular el delay de 175ms de la creación de una tarea.
 
-Cuando el programa comienza, se definen tanto las constantes como las variables globales, entre ellas podemos destacar a los 2 objetos \texttt{std::mutex}, encargados de sincronizar tanto el uso de la consola como de la \texttt{std::queue} de tasks, al objeto \texttt{std::atomic} que lleva la cuenta de los sensores activos y a la variable y a la variable condicional \texttt{std::condition\_variable} usada para sincronizar a los sensores con los robots.
+Cuando el programa comienza, se definen tanto las constantes como las variables globales, entre ellas podemos destacar a los 2 objetos \lstinline|std::mutex|, encargados de sincronizar tanto el uso de la consola como de la \lstinline|std::queue| de tasks, al objeto \lstinline|std::atomic| que lleva la cuenta de los sensores activos y a la variable y a la variable condicional \lstinline|std::condition_variable| usada para sincronizar a los sensores con los robots.
 
-Luego se inician los threads definidos como \texttt{std::jthreads} para que todos sean ejecutados por completo y no puedan ser interrumpidos. Luego el funcionamiento se rige por la siguiente estructura para cada hilo:
+Luego se inician los threads definidos como \lstinline|std::jthreads| para que todos sean ejecutados por completo y no puedan ser interrumpidos. Luego el funcionamiento se rige por la siguiente estructura para cada hilo:
 
 \subsection{Sensores}
 
 \begin{enumerate}[label=\Roman*.]
     \item Por cada tarea a generar 
     \begin{enumerate}[label=\roman*.]
-        \item Se bloquea el \texttt{std::mutex} de la queue para crear la tarea, asignando los atributos y agregándola a la cola.
-        \item Se bloque la consola y se hace el \textit{log} respectivo.
-        \item Se notifica a los robots (que están en espera) que hay una tarea disponible mediante la variable condicional.
+        \item Se bloquea el \lstinline|std::mutex| de la queue para crear la tarea, asignando los atributos y\\agregándola a la cola.
+        \item Se bloque la consola y se hace el \textit{log}\\respectivo.
+        \item Se notifica a los robots (que están en espera) que hay una tarea disponible mediante la\\variable condicional.
     \end{enumerate}
-    \item Lockeando el mutex destinado a los sensores, se actualiza el contador atómico y se verifica si es el último sensor. Si es el caso se notifica a los robots.
+    \item Lockeando el mutex destinado a los sensores, se actualiza el contador atómico y se verifica si es el\\último sensor. Si es el caso se notifica a los robots.
 \end{enumerate}
+
+\vspace{15ex}
 
 \subsection{Robots}
 
 \begin{enumerate}[label=\Roman*.]
     \item Mientras que hayan sensores activos o tareas disponibles
     \begin{enumerate}[label=\roman*.]
-        \item Espera hasta ser notificado por los sensores que hay una tarea nueva disponible,
-        o que terminó el último sensor
-        \item Se quita la tarea de la cola y se la procesa (esperando el respectivo acceso mediante
-        el mutex)
-        \item Se simula el delay del procesamiento de la tarea de 250ms
+        \item Espera hasta ser notificado por los sensores que hay una tarea nueva disponible, o que\\terminó el último sensor
+        \item Se quita la tarea de la cola y se la procesa\\(esperando el respectivo acceso mediante el mutex)
+        \item Se simula el delay del procesamiento de la\\tarea de 250ms
         \item Se hace el \textit{log} del procesamiento lockeando primero la consola.
     \end{enumerate}
     \item Se loggea la finalización del trabajo del Robot
@@ -161,16 +205,18 @@ Luego se inician los threads definidos como \texttt{std::jthreads} para que todo
 
 \subsection{Compilación y Ejecución}
 
-Posicionandose dentro de la carpeta \texttt{exercise3}:
+Posicionandose dentro de la carpeta \lstinline|exercise3|:
 
 \begin{enumerate}[label=\roman*.]
-    \item \texttt{make main}: compilar
-    \item \texttt{make run}: compilar y ejecutar
-    \item \texttt{run-valgrind}: compilar y ejecutar con \texttt{Valgrind}
-    \item \texttt{make clean}: elimina ejectuables
+    \item \lstinline|make main|: compilar
+    \item \lstinline|make run|: compilar y ejecutar
+    \item \lstinline|run-valgrind|: compilar y ejecutar con \lstinline|Valgrind|
+    \item \lstinline|make clean|: elimina ejectuables
 \end{enumerate}
-\section*{Aprendizaje}
 
+\newpage
+
+\section*{Aprendizaje}
 
 \end{multicols}
 \end{document}

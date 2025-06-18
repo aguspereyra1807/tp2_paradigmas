@@ -21,10 +21,10 @@ class PokemonInfo {
         PokemonInfo(const string& _type, const string& _description, const u_map_str_dmg& _attacksByLevel, const vector<experience_t>& _nextLevelExperience);
         ~PokemonInfo() = default;
 
-        string getType() const;
-        string getDescription() const;
-        u_map_str_dmg getAttacksByLevel() const;
-        vector<experience_t> getNextLevelExperience() const;
+        const string& getType() const;
+        const string& getDescription() const;
+        const u_map_str_dmg& getAttacksByLevel() const;
+        const vector<experience_t>& getNextLevelExperience() const;
 
         void serialize(ofstream& out) const;
         void deserialize(ifstream& in);

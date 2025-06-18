@@ -27,7 +27,7 @@ class Pokedex {
         void showAll() const;
         void show(const Pokemon& pokemon) const;
 
-        void loadFile(const string& _file);
+        void loadFile(const string& _file = "pokedex");
         void save() const;
         void saveAs(const string& newFile);
 };

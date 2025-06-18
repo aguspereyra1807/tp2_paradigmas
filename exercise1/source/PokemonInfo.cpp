@@ -13,13 +13,13 @@ PokemonInfo::PokemonInfo():
 
 PokemonInfo::PokemonInfo(const string& _type, const string& _description, const u_map_str_dmg& _attacksByLevel, const vector<experience_t>& _nextLevelExperience): type(_type), description(_description), attacksByLevel(_attacksByLevel), nextLevelExperience(_nextLevelExperience) {}
 
-string PokemonInfo::getType() const {return type;}
+const string& PokemonInfo::getType() const {return type;}
 
-string PokemonInfo::getDescription() const {return description;}
+const string& PokemonInfo::getDescription() const {return description;}
 
-u_map_str_dmg PokemonInfo::getAttacksByLevel() const {return attacksByLevel;}
+const u_map_str_dmg& PokemonInfo::getAttacksByLevel() const {return attacksByLevel;}
 
-vector<experience_t> PokemonInfo::getNextLevelExperience() const {return nextLevelExperience;}
+const vector<experience_t>& PokemonInfo::getNextLevelExperience() const {return nextLevelExperience;}
 
 void PokemonInfo::serialize(ofstream& out) const {
     size_t len;

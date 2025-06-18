@@ -5,18 +5,7 @@
 
 using namespace std;
 
-Pokedex::Pokedex(): data() {
-    string load;
-    cout << "¿Quiere cargar los datos guardados en el último pokedex? (s/n)" << endl;
-    cin >> load;
-
-    if (load == "s") {
-        loadFile(file);
-        cout << "Datos cargados correctamente." << endl;
-    } else {
-        cout << "Se creó el pokedex vacío." << endl;
-    }
-}
+Pokedex::Pokedex(): data() {}
 
 Pokedex::Pokedex(u_map_P_PI _data): data(_data) {
     cout << "Se creó un nuevo pokedex con los datos." << endl;
@@ -35,8 +24,8 @@ void Pokedex::addPokemon(const Pokemon& pokemon, const PokemonInfo& pokemonInfo)
 
 void Pokedex::showAll() const {
     int index = 1;
-    for(const auto& [pokemon, pokemonInfo] : data) {
-        cout << index << ". " << pokemon << endl << pokemonInfo << endl;
+    for (auto it = data.begin(); it != data.end(); ++it) {
+        cout << index << ". " << it->first << endl << it->second << endl;
         index++;
     }
 }
@@ -84,7 +73,7 @@ void Pokedex::save() const {
             pokemonInfo.serialize(outFile);
         }
         outFile.close();
-        cout << "Se guardaron correctamente los datos en " << file <<  "." << endl;
+        cout << "Se guardaron correctamente los datos en '" << file <<  ".bin'." << endl;
     } else {
         cout << "No se pudo abrir el archivo." << endl;
     }
