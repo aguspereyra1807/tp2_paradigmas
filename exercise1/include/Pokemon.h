@@ -29,6 +29,8 @@ class Pokemon {
         friend std::ostream& operator<<(std::ostream& os, const Pokemon& pokemon);
 };
 
+// Template Specialization para el hash del unordered_map de la Pokedex con objeto
+// Pokemon como key
 namespace std {
     template<>
     struct hash<Pokemon> {
