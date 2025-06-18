@@ -6,13 +6,11 @@
 \usepackage{graphicx}
 
 \usepackage{titlesec}
-% Spacing between lines
-\renewcommand{\baselinestretch}{1.1}
+\renewcommand{\baselinestretch}{1.1} % Espacio entre lineas
 
-% Spacing between paragraphs
-\setlength{\parskip}{0.25em}
+\setlength{\parskip}{0.25em} % Espacio entre párrafos
 
-% Title spacing (customize as needed)
+% Espacio del título
 \titlespacing*{\section}{0pt}{1.5ex plus 0.5ex minus .2ex}{1ex minus .2ex}
 \titlespacing*{\subsection}{0pt}{1ex plus 0.3ex minus .2ex}{0.7ex minus .2ex}
 
@@ -124,7 +122,6 @@ Tiene sus constructores básicos, uno de ellos permite definir en que archivo se
 \subsection{Compilación y Ejecución}
 
 Posicionandose dentro de la carpeta \lstinline|exercise1|:
-
 \begin{enumerate}[label=\roman*.]
     \item \lstinline|make b|: compilar ejercicio b
     \item \lstinline|make run-b|: compilar y ejecutar ejercicio b

@@ -1,32 +1,32 @@
 #pragma once
 
 #include <string>
-
-using namespace std;
+#include <iostream>
+#include <fstream>
 
 typedef unsigned int experience_t;
 
 class Pokemon {
     private:
-        string name;
+        std::string name;
         experience_t experience;
     public:
         Pokemon();
-        Pokemon(const string& _name);
-        Pokemon(const string& _name, const experience_t _experience);
+        Pokemon(const std::string& _name);
+        Pokemon(const std::string& _name, const experience_t _experience);
         ~Pokemon() = default;
 
-        string getName() const;
+        std::string getName() const;
         experience_t getExperience() const;
 
         void setExperience(const experience_t _experience);
 
-        void serialize(ofstream& out) const;
-        void deserialize(ifstream& in);
+        void serialize(std::ofstream& out) const;
+        void deserialize(std::ifstream& in);
 
         bool operator==(const Pokemon& other) const;
 
-        friend ostream& operator<<(ostream& os, const Pokemon& pokemon);
+        friend std::ostream& operator<<(std::ostream& os, const Pokemon& pokemon);
 };
 
 namespace std {

@@ -1,8 +1,5 @@
 #include "../include/PokemonInfo.h"
 
-#include <iostream>
-#include <fstream>
-
 using namespace std;
 
 PokemonInfo::PokemonInfo():

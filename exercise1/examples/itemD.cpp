@@ -2,12 +2,6 @@
 #include "../include/PokemonInfo.h"
 #include "../include/Pokedex.h"
 
-#include <iostream>
-#include <string>
-#include <limits>
-#include <vector>
-#include <fstream>
-
 using namespace std;
 
 void clearInputBuffer() {

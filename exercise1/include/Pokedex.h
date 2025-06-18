@@ -1,23 +1,19 @@
 #pragma once
 
-#include <unordered_map>
-#include <string>
-
 #include "Pokemon.h"
 #include "PokemonInfo.h"
+#include <limits>
 
-using namespace std;
-
-using u_map_P_PI = unordered_map<Pokemon, PokemonInfo>;
+using u_map_P_PI = std::unordered_map<Pokemon, PokemonInfo>;
 
 class Pokedex {
     private:
         u_map_P_PI data;
-        string file = "pokedex";
+        std::string file = "pokedex";
     public:
         Pokedex();
         Pokedex(u_map_P_PI _data);
-        Pokedex(const string& _file);
+        Pokedex(const std::string& _file);
         ~Pokedex() = default;
 
         bool empty() const; 
@@ -27,7 +23,7 @@ class Pokedex {
         void showAll() const;
         void show(const Pokemon& pokemon) const;
 
-        void loadFile(const string& _file = "pokedex");
+        void loadFile(const std::string& _file = "pokedex");
         void save() const;
-        void saveAs(const string& newFile);
+        void saveAs(const std::string& newFile);
 };

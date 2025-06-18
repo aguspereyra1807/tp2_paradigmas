@@ -1,8 +1,5 @@
 #include "../include/Pokedex.h"
 
-#include <iostream>
-#include <fstream>
-
 using namespace std;
 
 Pokedex::Pokedex(): data() {}

@@ -1,8 +1,5 @@
 #include "../include/Pokemon.h"
 
-#include <iostream>
-#include <fstream>
-
 using namespace std;
 
 Pokemon::Pokemon(): name(), experience(0) {}
