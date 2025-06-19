@@ -2,7 +2,4 @@
 
 Federico Pizarro, Agustín Pereyra
 
-## Solucionar
-
-- Generalizar Makefiles de cada ejercicio
-- Ver como implementar un Makefile para todos en carpeta root (o no)
+[Ver el informe en PDF](./report/report.pdf)
