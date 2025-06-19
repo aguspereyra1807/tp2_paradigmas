@@ -79,7 +79,7 @@
 \end{center}
 
 {\bfseries\selectfont Este trabajo tiene el objetivo de afianzar los conceptos de
-\textit{Multithreading} o programación multi-hilos, con sincronización y uso de datos compartidos como también serialización, uso de clases y structs, containers y streams en \lstinline|C++| a partir de diferentes ejercicios prácticos.
+\textit{Multithreading} o programación multihilo, con sincronización y uso de datos compartidos como también serialización, uso de clases y structs, containers y streams en \lstinline|C++| a partir de diferentes ejercicios prácticos.
 }
 \begin{center}
     \small\itshape\textbf{Aclaración:} Para cada ejercicio se diseñó un archivo \lstinline|Makefile| para automatizar la compilación y ejecución con \lstinline|g++| de cada uno de los ejercicios, utilizando las flags \lstinline|-Wall| \lstinline|-Wextra|, \lstinline|-Wpedantic|. En cada sección se detallan los comandos correspondientes para cada uno 
@@ -89,7 +89,7 @@
 
 \section{Pokedex}
 
-Esta ejercitación pide desarrollar un pokedex digital funcional en \lstinline|C++|. Donde se implementarion tres clases \lstinline|Pokemon|, \lstinline|PokemonInfo| y \lstinline|Pokedex|.
+Esta ejercitación pide desarrollar un pokedex digital funcional en \lstinline|C++|. Donde se implementaron tres clases \lstinline|Pokemon|, \lstinline|PokemonInfo| y \lstinline|Pokedex|.
 
 En la clase \lstinline|PokemonInfo|, se debía decidir que contenedores utilizar para \lstinline|attacksByLevel| y \lstinline|nextLevelExperience|, en ambos decidimos usar un array de 3 elementos, ya que siempre contamos con 3 niveles. Esto nos permite guardar menos información en la serialización, ya que son de largo fijo, esto se refleja en un menor peso en el archivo donde guardamos los datos, en conclusión esto permite que el proyecto sea aún más escalable.
 
@@ -142,7 +142,7 @@ Posicionandose dentro de la carpeta \lstinline|exercise1|:
 
 \section{Control de Aeronave en Hangar Automatizado}
 
-Para que cada Dron espere a que sus zonas laterales estén libres para poder despegar, se utilizaron punteros de \lstinline|std::mutex| como atributos de la clase \lstinline|Dron|, de manera tal que cada dron tiene los mutex de sus 2 zonas laterales, e intenta lockearlos para que le permita despegar. Si algún otro dron tiene lockeado al menos 1 de sus zonas este tendrá imposibilitado el despegue y quedará a la espera de que se liberen.
+Para que cada Dron espere a que sus zonas laterales estén libres para poder despegar, se utilizaron punteros de \lstinline|std::mutex| como atributos de la clase \lstinline|Dron|, de manera tal que cada dron tiene los mutex de sus 2 zonas laterales, e intenta bloquearlos para que le permita despegar. Si algún otro dron tiene lockeado al menos 1 de sus zonas este tendrá imposibilitado el despegue y quedará a la espera de que se liberen.
 
 \subsection{Dron}
 
@@ -173,7 +173,7 @@ Para la resolución de esta parte, se hizo uso de una sola estructura llamada \l
 
 El struct \lstinline|Task| solo contiene el ID del mismo, el ID del sensor que lo generó y una descripción del mismo, la cual se elige aleatoriamente de un array de descripciones genéricas. Además tiene solo un constructor que tiene como función adicional, simular el delay de 175ms de la creación de una tarea.
 
-Cuando el programa comienza, se definen tanto las constantes como las variables globales, entre ellas podemos destacar a los 2 objetos \lstinline|std::mutex|, encargados de sincronizar tanto el uso de la consola como de la \lstinline|std::queue| de tasks, al objeto \lstinline|std::atomic| que lleva la cuenta de los sensores activos y a la variable y a la variable condicional \lstinline|std::condition_variable| usada para sincronizar a los sensores con los robots.
+Cuando el programa comienza, se definen tanto las constantes como las variables globales, entre ellas podemos destacar a los 2 objetos \lstinline|std::mutex|, encargados de sincronizar tanto el uso de la consola como de la \lstinline|std::queue| de tasks, al objeto \lstinline|std::atomic| que lleva la cuenta de los sensores activos y a la variable \lstinline|std::condition_variable| usada para sincronizar a los sensores con los robots.
 
 Luego se inician los threads definidos como \lstinline|std::jthreads| para que todos sean ejecutados por completo y no puedan ser interrumpidos. Luego el funcionamiento se rige por la siguiente estructura para cada hilo:
 
@@ -199,7 +199,7 @@ Luego se inician los threads definidos como \lstinline|std::jthreads| para que t
         \item Espera hasta ser notificado por los sensores que hay una tarea nueva disponible, o que\\terminó el último sensor
         \item Se quita la tarea de la cola y se la procesa\\(esperando el respectivo acceso mediante el mutex)
         \item Se simula el delay del procesamiento de la\\tarea de 250ms
-        \item Se hace el \textit{log} del procesamiento lockeando primero la consola.
+        \item Se hace el \textit{log} del procesamiento bloqueando primero la consola.
     \end{enumerate}
     \item Se loggea la finalización del trabajo del Robot
 \end{enumerate}
@@ -224,7 +224,7 @@ Posicionandose dentro de la carpeta \lstinline|exercise3|:
 \dots
 
 \begin{quote}
-    \small\itshape\textbf{Warnings:} Para cada uno de los apartados fueron solucionados tanto los erorres, warnings como recomendaciones
+    \small\itshape\textbf{Warnings:} Para cada uno de los apartados fueron solucionados tanto los errores, warnings como recomendaciones
 indicadas por el compilador \lstinline|g++| dadas las flags mencionadas anteriormente.
 \end{quote}
 
