@@ -89,13 +89,19 @@
 
 \section{Pokedex}
 
-Esta ejercitación pide desarrollar un pokedex digital funcional en \lstinline|C++|. Donde se implementarion tres clases \lstinline|Pokemon|, \lstinline|PokemonInfo| y \lstinline|Pokedex|. \textcolor{red}{Definir y defender contenedores para atributos de PokemonInfo.}
+Esta ejercitación pide desarrollar un pokedex digital funcional en \lstinline|C++|. Donde se implementarion tres clases \lstinline|Pokemon|, \lstinline|PokemonInfo| y \lstinline|Pokedex|.
+
+En la clase \lstinline|PokemonInfo|, se debía decidir que contenedores utilizar para \lstinline|attacksByLevel| y \lstinline|nextLevelExperience|, en ambos decidimos usar un array de 3 elementos, ya que siempre contamos con 3 niveles. Esto nos permite guardar menos información en la serialización, ya que son de largo fijo, esto se refleja en un menor peso en el archivo donde guardamos los datos, en conclusión esto permite que el proyecto sea aún más escalable.
 
 Luego, para resolver el ejercicio b se implementó un \lstinline|itemB.cpp| donde se generán los pokemones pedidos y luego se utiliza una función \lstinline|Pokedex::showAll()|, la cual usa únicamente las instancias de \lstinline|Pokemon| para buscar y mostrar la información de los tres pokemones.
+
+\columnbreak
 
 En el ejercicio c se pide probar el funcionamiento de una función \lstinline|show|, la cual permita mostrar la información de un pokemon en particular guardado en el pokedex, solamente con la instancia de \lstinline|Pokemon|. Para esto se creó un \lstinline|itemC.cpp| donde se muestra un caso en el que si existe el pokemon y otro donde no existe.
 
 Por último para la consigna opcional del ejercicio d, en \lstinline|itemD.cpp| se implemtó un menú para poder controlar un pokedex, donde se puede guardar pokemones, mostrar uno o varios pokemones, guardar el pokedex, y cargar un pokedex desde un archivo. La idea principal es poder serializar y deserializar todos los elementos del pokedex, es por esto que las clases \lstinline|Pokemon| y \lstinline|PokemonInfo|, cuentan con estos métodos.
+
+\columnbreak
 
 \subsection{Pokemon}
 
@@ -106,8 +112,6 @@ Implementa métodos constructores, por defecto, con el nombre y también otro co
 Se sobrecarga el operador \lstinline|==| para poder utilizar la función \lstinline|.find()| de los \lstinline|unordered_map| para comparar las claves, ya que se guardan como la key del mapa. Por último, especializamos la plantilla \lstinline|std::hash<Pokemon>|, lo cual permite al mapa hashear el objeto basándose en el nombre del pokemon.
 
 \subsection{PokemonInfo}
-
-%!! Definir contenedores. (vectr<pair>, unordered_map, etc).
 
 Se implementaron los atributos privados \lstinline|type| y \lstinline|description|, los cuáles son \lstinline|string| que representan que tipo de pokemon es, y una breve descripción. Además, \lstinline|PokemonInfo| cuenta con un \lstinline|unordered_map<string, damage_t>|, donde \lstinline|damage_t| es un \lstinline|unsigned int|, el cuál representa cuánto daño causa cada ataque. Por último, también cuenta con un \lstinline|vector<experience_t>|, donde \lstinline|experience_t| es también un \lstinline|unsigned int|, en él se guarda la experiencia necesaria para alcanzar el próximo nivel.
 
@@ -150,6 +154,8 @@ Los métodos implementados son su constructor, un logger que se usa de forma pri
 
 La situación del Hangar se representa en el código principal, en donde se inicializan tanto las zonas como los drones y se inicia un \lstinline|std::thread| por cada uno de los drones. Luego se asegura que el programa espere a que terminen de ejecutarse por completo los threads antes de que se liberen los punteros a las zonas (mutex).
 
+\columnbreak
+
 \subsection{Compilación y Ejecución}
 
 Posicionandose dentro de la carpeta \lstinline|exercise2|:
@@ -161,8 +167,6 @@ Posicionandose dentro de la carpeta \lstinline|exercise2|:
     \item \lstinline|make clean|: eliminar ejecutables
 \end{enumerate}
 
-\newpage
-
 \section{Sistema de Monitoreo y Procesamiento de Robots Autónomos}
 
 Para la resolución de esta parte, se hizo uso de una sola estructura llamada \lstinline|Task|, la cuál tiene las propiedades de las tareas emitidas por los Sensores y procesadas por los Robots, ambos implementados como hilos (threads). Además está casi todo el código dentro del mismo archivo source, main.cpp, y lo único fuera de él es tanto la implementación como la definición de la estructura.
@@ -172,6 +176,8 @@ El struct \lstinline|Task| solo contiene el ID del mismo, el ID del sensor que l
 Cuando el programa comienza, se definen tanto las constantes como las variables globales, entre ellas podemos destacar a los 2 objetos \lstinline|std::mutex|, encargados de sincronizar tanto el uso de la consola como de la \lstinline|std::queue| de tasks, al objeto \lstinline|std::atomic| que lleva la cuenta de los sensores activos y a la variable y a la variable condicional \lstinline|std::condition_variable| usada para sincronizar a los sensores con los robots.
 
 Luego se inician los threads definidos como \lstinline|std::jthreads| para que todos sean ejecutados por completo y no puedan ser interrumpidos. Luego el funcionamiento se rige por la siguiente estructura para cada hilo:
+
+\columnbreak
 
 \subsection{Sensores}
 
@@ -184,8 +190,6 @@ Luego se inician los threads definidos como \lstinline|std::jthreads| para que t
     \end{enumerate}
     \item Lockeando el mutex destinado a los sensores, se actualiza el contador atómico y se verifica si es el\\último sensor. Si es el caso se notifica a los robots.
 \end{enumerate}
-
-\vspace{15ex}
 
 \subsection{Robots}
 
@@ -211,7 +215,9 @@ Posicionandose dentro de la carpeta \lstinline|exercise3|:
     \item \lstinline|make clean|: elimina ejectuables
 \end{enumerate}
 
-\newpage
+\end{multicols}
+
+\rule{44em}{0.5pt}
 
 \section*{Aprendizaje}
 
@@ -219,8 +225,7 @@ Posicionandose dentro de la carpeta \lstinline|exercise3|:
 
 \begin{quote}
     \small\itshape\textbf{Warnings:} Para cada uno de los apartados fueron solucionados tanto los erorres, warnings como recomendaciones
-indicadas por el compilador \lstinline|g++| dadas las flags mencionadas anteriormenter
+indicadas por el compilador \lstinline|g++| dadas las flags mencionadas anteriormente.
 \end{quote}
 
-\end{multicols}
 \end{document}

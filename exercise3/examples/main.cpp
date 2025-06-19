@@ -66,6 +66,8 @@ void turnOnRobot(ID_t robotID) {
         unique_lock<mutex> lock(sensorPermission);
         cv.wait(lock, []{return !tasks.empty() || activeSensors == 0;} ); // espera hasta poder sacar una tarea
 
+        // Check double checked lock
+        
         if (!tasks.empty()) {
             auto task = tasks.front();
             tasks.pop();

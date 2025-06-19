@@ -2,86 +2,102 @@
 
 using namespace std;
 
+// Constructor por defecto, para ahorrar tiempo en las pruebas
 PokemonInfo::PokemonInfo():
     type("Estándar"),
     description("Breve descripción..."),
-    attacksByLevel({{"Ataque 1", 2}, {"Ataque 2", 4}, {"Ataque 3", 8}}),
-    nextLevelExperience({0, 500, 1250}) {}
+    attacksByLevel{std::make_pair("Ataque 1", 2), std::make_pair("Ataque 2", 4), std::make_pair("Ataque 3", 8)},
+    nextLevelExperience{0, 500, 1250} {}
 
-PokemonInfo::PokemonInfo(const string& _type, const string& _description, const u_map_str_dmg& _attacksByLevel, const vector<experience_t>& _nextLevelExperience): type(_type), description(_description), attacksByLevel(_attacksByLevel), nextLevelExperience(_nextLevelExperience) {}
+PokemonInfo::PokemonInfo(const string& _type, const string& _description, const arr_str_dmg& _attacksByLevel, const std::array<experience_t, 3>& _nextLevelExperience): type(_type), description(_description), attacksByLevel(_attacksByLevel), nextLevelExperience(_nextLevelExperience) {}
 
 const string& PokemonInfo::getType() const {return type;}
 
 const string& PokemonInfo::getDescription() const {return description;}
 
-const u_map_str_dmg& PokemonInfo::getAttacksByLevel() const {return attacksByLevel;}
+const arr_str_dmg& PokemonInfo::getAttacksByLevel() const {return attacksByLevel;}
 
-const vector<experience_t>& PokemonInfo::getNextLevelExperience() const {return nextLevelExperience;}
+const std::array<experience_t, 3>& PokemonInfo::getNextLevelExperience() const {return nextLevelExperience;}
+
+const experience_t& PokemonInfo::getNextLevelExperienceByIndex(const size_t i) const {return nextLevelExperience[i];}
 
 void PokemonInfo::serialize(ofstream& out) const {
     size_t len;
-    
+
+    // Escribimos el largo del tipo, y luego los caracteres del tipo
     len = type.size();
     out.write(reinterpret_cast<const char*>(&len), sizeof(len));
     out.write(type.data(), len);
 
+    // Escribimos el largo de la descripción, y luego sus caracteres
     len = description.size();
     out.write(reinterpret_cast<const char*>(&len), sizeof(len));
     out.write(description.data(), len);
     
-    size_t mapSize = attacksByLevel.size();
-    out.write(reinterpret_cast<char*>(&mapSize), sizeof(mapSize));
+    // Para arrays de tamaño fijo (3), no necesitamos escribir el tamaño
+    // Ya que sabemos que siempre tendremos 3 elementos
 
     for (const auto& [atk, dmg] : attacksByLevel) {
+        // Para cada ataque escribimos el largo del string, y luego sus caracteres
         size_t atkLen = atk.size();
-        out.write(reinterpret_cast<char*>(&atkLen), sizeof(atkLen));
+        out.write(reinterpret_cast<const char*>(&atkLen), sizeof(atkLen));
         out.write(atk.data(), atkLen);
 
-        damage_t dmgCopy = dmg;
-        out.write(reinterpret_cast<char*>(&dmgCopy), sizeof(dmgCopy));
+        // Escribimos el daño que causa el ataque
+        out.write(reinterpret_cast<const char*>(&dmg), sizeof(dmg));
     }
 
-    size_t vecSize = nextLevelExperience.size();
-    out.write(reinterpret_cast<char*>(&vecSize), sizeof(vecSize));
+    // Para arrays de tamaño fijo (3), no necesitamos escribir el tamaño
+    // Ya que sabemos que siempre tendremos 3 elementos
 
     for (experience_t e : nextLevelExperience) {
-        out.write(reinterpret_cast<char*>(&e), sizeof(e));
+        // Escribimos cada cantidad de experiencia para el próximo nivel
+        out.write(reinterpret_cast<const char*>(&e), sizeof(e));
     }
 }
 
 void PokemonInfo::deserialize(ifstream& in) {
     size_t len;
 
+    // Leemos el largo del tipo, y luego los caracteres del tipo
     in.read(reinterpret_cast<char*>(&len), sizeof(len));
     type.resize(len);
     in.read(&type[0], len);
     
+    // Leemos el largo de la descripción, y luego sus caracteres
     in.read(reinterpret_cast<char*>(&len), sizeof(len));
     description.resize(len);
     in.read(&description[0], len);
     
-    size_t mapSize;
-    in.read(reinterpret_cast<char*>(&mapSize), sizeof(mapSize));
-    attacksByLevel.clear();
-
-    for (size_t i = 0; i < mapSize; ++i) {
-        size_t atkLen; in.read(reinterpret_cast<char*>(&atkLen), sizeof(atkLen));
-        string atk; atk.resize(atkLen);
+    // Para un array fijo de tamaño 3, sabemos exactamente cuántos elementos leer
+    // Ya no leemos el tamaño ya que sabemos que siempre son 3
+    for (size_t i = 0; i < 3; ++i) {
+        // Para cada ataque leemos el largo del string
+        size_t atkLen;
+        in.read(reinterpret_cast<char*>(&atkLen), sizeof(atkLen));
+        
+        // Luego leemos el string
+        string atk;
+        atk.resize(atkLen);
         in.read(&atk[0], atkLen);
 
-        damage_t dmg; in.read(reinterpret_cast<char*>(&dmg), sizeof(dmg));
-        attacksByLevel[atk] = dmg;
-    }
+        // Leemos el daño del ataque
+        damage_t dmg;
+        in.read(reinterpret_cast<char*>(&dmg), sizeof(dmg));
 
-    size_t vecSize;
-    in.read(reinterpret_cast<char*>(&vecSize), sizeof(vecSize));
-    nextLevelExperience.resize(vecSize);
+        // Guardamos en el array el par de ("Ataque", Daño)
+        attacksByLevel[i] = std::make_pair(atk, dmg);
+    }
     
-    for (size_t i = 0; i < vecSize; ++i) {
+    // Para un array fijo de tamaño 3, sabemos exactamente cuántos elementos leer
+    // Ya no leemos el tamaño ya que sabemos que siempre son 3
+    for (size_t i = 0; i < 3; ++i) {
+        // Leemos cada cantidad de experiencia para el próximo nivel
         in.read(reinterpret_cast<char*>(&nextLevelExperience[i]), sizeof(experience_t));
     }
 }
 
+// Permite imprimir rápidamente con formato
 ostream& operator<<(ostream& os, const PokemonInfo& pokemonInfo) {
     os << "Tipo: " << pokemonInfo.getType() << endl
        << "Descripción: " << pokemonInfo.getDescription() << endl << endl
@@ -95,9 +111,9 @@ ostream& operator<<(ostream& os, const PokemonInfo& pokemonInfo) {
     }
     
     os << endl << "Niveles según Experiencia:" << endl
-       << "Nivel 1: " << pokemonInfo.getNextLevelExperience()[0] << " Experiencia." << endl
-       << "Nivel 2: " << pokemonInfo.getNextLevelExperience()[1] << " Experiencia." << endl
-       << "Nivel 3: " << pokemonInfo.getNextLevelExperience()[2] << " Experiencia." << endl;
+       << "Nivel 1: " << pokemonInfo.getNextLevelExperienceByIndex(0) << " Experiencia." << endl
+       << "Nivel 2: " << pokemonInfo.getNextLevelExperienceByIndex(1) << " Experiencia." << endl
+       << "Nivel 3: " << pokemonInfo.getNextLevelExperienceByIndex(2) << " Experiencia." << endl;
 
     return os;
 }

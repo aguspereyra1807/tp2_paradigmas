@@ -2,6 +2,12 @@
 #include "../include/PokemonInfo.h"
 #include "../include/Pokedex.h"
 
+#include <iostream>
+#include <string>
+#include <limits>
+#include <vector>
+#include <array>
+
 using namespace std;
 
 void clearInputBuffer() {
@@ -9,12 +15,14 @@ void clearInputBuffer() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
+// Permite hacer pausas en el menú interactivo
 void pressEnterToContinue() {
     cin.clear();
     cout << "Presione Enter para continuar...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
+// Pide un input nuevamente si no es correcto
 int getValidIntInput() {
     int input;
 
@@ -28,14 +36,16 @@ int getValidIntInput() {
     return input;
 }
 
+// Revisa si existe un pokedex
 bool checkPokedexExists(Pokedex* pokedex) {
     if (pokedex == nullptr) {
-        cout << "Primero debe crear una Pokedex (opción 1)." << endl;
+        cout << "Primero debe crear un Pokedex (opción 1)." << endl;
         pressEnterToContinue();
         return false;
     } else {return true;}
 }
 
+// Función auxiliar para crear un pokemon
 Pokemon createPokemon() {
     string name;
     experience_t exp;
@@ -49,10 +59,11 @@ Pokemon createPokemon() {
     return Pokemon(name, exp);
 }
 
+// Función auxiliar para crear la información de un pokemon
 PokemonInfo createPokemonInfo() {
     string type, description;
-    u_map_str_dmg attacks;
-    vector<experience_t> expLevels(3);
+    arr_str_dmg attacks;
+    array<experience_t, 3> expLevels;
     
     cout << "Ingrese el tipo del Pokémon: ";
     getline(cin, type);
@@ -71,7 +82,7 @@ PokemonInfo createPokemonInfo() {
         cout << "Daño del ataque " << (i+1) << ": ";
         damage = getValidIntInput();
         
-        attacks[attackName] = damage;
+        attacks[i] = make_pair(attackName, damage);
     }
     
     cout << "Ingrese la experiencia necesaria para el nivel 1: ";
@@ -88,7 +99,7 @@ PokemonInfo createPokemonInfo() {
 
 void showMainMenu() {
     cout << "\n===== POKEDEX MENU =====" << endl;
-    cout << "1. Crear una nueva Pokedex" << endl;
+    cout << "1. Crear un nuevo Pokedex" << endl;
     cout << "2. Crear y agregar un Pokémon" << endl;
     cout << "3. Mostrar todos los Pokémon" << endl;
     cout << "4. Buscar un Pokémon" << endl;
@@ -109,15 +120,17 @@ int main() {
     cout << "Bienvenido al sistema de prueba de Pokedex" << endl;
     
     while (!exit) {
+        // Primero mostramos el menu
         showMainMenu();
         choice = getValidIntInput();
         
+        // Luego manejamos las opciones
         switch (choice) {
             case 1: {
                 if (pokedex != nullptr) {delete pokedex;}
 
                 pokedex = new Pokedex();
-                cout << "Se ha creado una nueva Pokedex." << endl;
+                cout << "Se ha creado un nuevo Pokedex." << endl;
                 
                 string load;
                 cout << "¿Quiere cargar los datos guardados en el último pokedex? (s/n)" << endl;
@@ -141,12 +154,14 @@ int main() {
                 tempPokemon = new Pokemon(createPokemon());
                 cout << "Pokémon creado: " << *tempPokemon << endl;
                 
+                // Esto permite hacer pruebas rápidamente
                 cout << "¿Desea detallar la información del Pokémon? (s/n): ";
                 string detailChoice;
                 cin >> detailChoice;
                 clearInputBuffer();
 
                 if (detailChoice == "n") {
+                    // Utiliza el constructor por defecto con información genérica
                     PokemonInfo pokemonInfo;
                     pokedex->addPokemon(*tempPokemon, pokemonInfo);
                     cout << "Pokémon agregado con información por defecto." << endl;
@@ -154,10 +169,11 @@ int main() {
                     break;
                 }
 
+                // Si no se utiliza la función auxiliar para pedir todos los datos
                 PokemonInfo pokemonInfo = createPokemonInfo();
                 
                 pokedex->addPokemon(*tempPokemon, pokemonInfo);
-                cout << "Pokémon agregado correctamente a la Pokedex." << endl;
+                cout << "Pokémon agregado correctamente al Pokedex." << endl;
                 pressEnterToContinue();
                 break;
             }
@@ -165,7 +181,7 @@ int main() {
                 if(!checkPokedexExists(pokedex)) {break;}
                 
                 if (pokedex->empty()) {
-                    cout << "La Pokedex está vacía. Agregue Pokémon primero (opción 2)." << endl;
+                    cout << "El Pokedex está vacío. Agregue Pokémon primero (opción 2)." << endl;
                     pressEnterToContinue();
                     break;
                 }
@@ -186,6 +202,7 @@ int main() {
                 cout << "Ingrese la experiencia del Pokémon a buscar: ";
                 exp = getValidIntInput();
                 
+                // Se usa una instancia de pokemon para buscar
                 Pokemon searchPokemon(name, exp);
                 pokedex->show(searchPokemon);
                 pressEnterToContinue();
@@ -216,6 +233,7 @@ int main() {
                 cout << "Ingrese el nombre del archivo a cargar (Sin .bin): ";
                 getline(cin, filename);
 
+                // Siempre cargamos un .bin desde la carpeta /data
                 ifstream fileCheck("data/" + filename + ".bin");
                 
                 if (!fileCheck.good()) {
@@ -229,9 +247,9 @@ int main() {
                 
                 try {
                     pokedex = new Pokedex(filename);
-                    cout << "Pokedex cargada correctamente desde '" << filename << "'." << endl;
+                    cout << "Pokedex cargado correctamente desde '" << filename << "'." << endl;
                 } catch (const exception& e) {
-                    cout << "Error al cargar la Pokedex: " << e.what() << endl;
+                    cout << "Error al cargar el Pokedex: " << e.what() << endl;
                     pokedex = nullptr;
                 }
                 
@@ -251,6 +269,7 @@ int main() {
         }
     }
     
+    // Eliminamos los punteros
     if (pokedex != nullptr) {delete pokedex;}
     
     if (tempPokemon != nullptr) {delete tempPokemon;}
