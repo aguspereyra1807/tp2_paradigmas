@@ -185,7 +185,7 @@ Luego se inician los threads definidos como \lstinline|std::jthreads| para que t
     \item Por cada tarea a generar 
     \begin{enumerate}[label=\roman*.]
         \item Se bloquea el \lstinline|std::mutex| de la queue para crear la tarea, asignando los atributos y\\agregándola a la cola.
-        \item Se bloque la consola y se hace el \textit{log}\\respectivo.
+        \item Se bloque la consola y se hace el \lstinline|log|\\respectivo.
         \item Se notifica a los robots (que están en espera) que hay una tarea disponible mediante la\\variable condicional.
     \end{enumerate}
     \item Lockeando el mutex destinado a los sensores, se actualiza el contador atómico y se verifica si es el\\último sensor. Si es el caso se notifica a los robots.
@@ -199,7 +199,7 @@ Luego se inician los threads definidos como \lstinline|std::jthreads| para que t
         \item Espera hasta ser notificado por los sensores que hay una tarea nueva disponible, o que\\terminó el último sensor
         \item Se quita la tarea de la cola y se la procesa\\(esperando el respectivo acceso mediante el mutex)
         \item Se simula el delay del procesamiento de la\\tarea de 250ms
-        \item Se hace el \textit{log} del procesamiento bloqueando primero la consola.
+        \item Se hace el \lstinline|log| del procesamiento bloqueando primero la consola.
     \end{enumerate}
     \item Se loggea la finalización del trabajo del Robot
 \end{enumerate}
@@ -218,10 +218,6 @@ Posicionandose dentro de la carpeta \lstinline|exercise3|:
 \end{multicols}
 
 \rule{44em}{0.5pt}
-
-\section*{Aprendizaje}
-
-\dots
 
 \begin{quote}
     \small\itshape\textbf{Warnings:} Para cada uno de los apartados fueron solucionados tanto los errores, warnings como recomendaciones

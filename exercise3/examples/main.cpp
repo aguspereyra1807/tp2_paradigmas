@@ -36,7 +36,7 @@ const vector<string> descriptions = {
 void turnOnSensor(ID_t sensorID) {
     for (int i = 0; i < TASK_AMOUNT_PER_SENSOR; ++i) {
         
-        ID_t taskID = sensorID + i;
+        ID_t taskID = sensorID*10 + i;
         string taskDesc = descriptions[rand() % descriptions.size()]; // Descripción aleatoria
         {
             lock_guard<mutex> lg(sensorPermission); // Bloquea el mutex y desbloquea cuando sale del scope
@@ -65,8 +65,6 @@ void turnOnRobot(ID_t robotID) {
     while (true) {
         unique_lock<mutex> lock(sensorPermission);
         cv.wait(lock, []{return !tasks.empty() || activeSensors == 0;} ); // espera hasta poder sacar una tarea
-
-        // Check double checked lock
         
         if (!tasks.empty()) {
             auto task = tasks.front();
@@ -78,7 +76,7 @@ void turnOnRobot(ID_t robotID) {
                 cout << ROBOT_C << "Robot  [#" << setw(2) << setfill('0') << robotID << "]" << DEFAULT_C << " processed ->" << TASK_C <<" Task [#" << 
                 setw(2) << setfill('0') << task.id << "]" << DEFAULT_C << " : '" << task.description << "'" << endl;
             }
-        } else if (activeSensors == 0) break;
+        } else { break; }
     } 
 
     {
