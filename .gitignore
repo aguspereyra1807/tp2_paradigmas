@@ -3,6 +3,6 @@ bin/
 data/
 report/*
 
-!report/report.tex
-!report/report.pdf
+!report/report_pereyra_pizarro.tex
+!report/report_pereyra_pizarro.pdf
 !report/figures/
